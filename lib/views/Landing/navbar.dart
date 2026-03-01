@@ -1,4 +1,4 @@
-import 'package:examai/widgets/gradient_button.dart';
+import 'package:examai/widgets/buttons/gradient_button.dart';
 import 'package:examai/widgets/gradient_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -43,7 +43,7 @@ class Navbar extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 10),
-                GradientText(text: "ExamIQ"),
+                GradientText(text: "ExamAI", fontSize: 20, height: 1.0),
               ],
             ),
             SizedBox(
@@ -62,7 +62,13 @@ class Navbar extends StatelessWidget {
                     );
                   }),
                   SizedBox(width: 8),
-                  GradientButton(text: "Get Started", onPressed: () {}),
+                  GradientButton(
+                    child: Text(
+                      "Get Started",
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                    onPressed: () {},
+                  ),
                 ],
               ),
             ),

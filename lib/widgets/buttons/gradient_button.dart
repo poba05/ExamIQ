@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
 class GradientButton extends StatelessWidget {
-  final String text;
+  final Widget child;
   final VoidCallback onPressed;
-  const GradientButton({super.key, required this.text, required this.onPressed});
+  const GradientButton({
+    super.key,
+    required this.child,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +27,7 @@ class GradientButton extends StatelessWidget {
           shadowColor: Colors.transparent,
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         ),
-        child: Text(
-          text,
-          style: TextStyle(fontSize: 16, color: Colors.white),
-        ),
+        child: child,
       ),
     );
   }
