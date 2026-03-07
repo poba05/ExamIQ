@@ -1,3 +1,4 @@
+import 'package:examai/constants/app_color.dart';
 import 'package:flutter/material.dart';
 
 class GradientButtonLg extends StatelessWidget {
@@ -19,9 +20,12 @@ class GradientButtonLg extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         gradient: LinearGradient(
-          colors: [Colors.blue, Colors.purple],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+          colors: [
+            AppColor.primaryBlue, // blue
+            AppColor.primaryPurple,
+          ],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
         ),
       ),
       child: ElevatedButton(

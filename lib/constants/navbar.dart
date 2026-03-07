@@ -1,3 +1,4 @@
+import 'package:examai/views/Login/login.dart';
 import 'package:examai/widgets/buttons/gradient_button.dart';
 import 'package:examai/widgets/gradient_text.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,10 @@ class Navbar extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     gradient: LinearGradient(
-                      colors: [Colors.blue, Colors.purple],
+                      colors: [
+                        Color(0xFF3B82F6), // blue
+                        Color(0xFF9333EA), // purple
+                      ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
@@ -67,7 +71,14 @@ class Navbar extends StatelessWidget {
                       "Get Started",
                       style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Login(selectedRole: null),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),

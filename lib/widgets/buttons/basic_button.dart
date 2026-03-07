@@ -1,3 +1,4 @@
+import 'package:examai/constants/app_color.dart';
 import 'package:flutter/material.dart';
 
 class BasicButton extends StatelessWidget {
@@ -18,7 +19,7 @@ class BasicButton extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: Colors.white,
+        color: AppColor.white,
         border: Border(
           bottom: BorderSide(color: Colors.grey.shade300, width: 1),
           top: BorderSide(color: Colors.grey.shade300, width: 1),

@@ -14,7 +14,7 @@ class GradientContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: height.toDouble(),
+      height: height,
       width: width.toDouble(),
       decoration: BoxDecoration(
         gradient: LinearGradient(
