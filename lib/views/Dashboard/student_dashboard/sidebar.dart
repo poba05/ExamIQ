@@ -1,5 +1,6 @@
 import 'package:examai/constants/app_color.dart';
 import 'package:examai/models/sidebar_model.dart';
+import 'package:examai/views/Landing/landing_page.dart';
 // import 'package:examai/views/Dashboard/student_dashboard/student_dashboard.dart';
 import 'package:examai/widgets/gradient_text.dart';
 import 'package:flutter/material.dart';
@@ -167,10 +168,36 @@ class _SidebarState extends State<Sidebar> {
                   ],
                 ),
                 Spacer(),
-                Icon(
-                  FontAwesomeIcons.arrowRightToBracket,
-                  color: AppColor.black,
-                  size: 20,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            const LandingPage(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                              const begin = Offset(1.0, 0.0);
+                              const end = Offset.zero;
+                              const curve = Curves.easeInOut;
+                              final tween = Tween(
+                                begin: begin,
+                                end: end,
+                              ).chain(CurveTween(curve: curve));
+                              return SlideTransition(
+                                position: animation.drive(tween),
+                                child: child,
+                              );
+                            },
+                        transitionDuration: const Duration(milliseconds: 400),
+                      ),
+                    );
+                  },
+                  child: Icon(
+                    FontAwesomeIcons.arrowRightToBracket,
+                    color: AppColor.black,
+                    size: 20,
+                  ),
                 ),
               ],
             ),
