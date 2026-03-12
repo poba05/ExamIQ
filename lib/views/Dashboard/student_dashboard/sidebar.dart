@@ -9,10 +9,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class Sidebar extends StatefulWidget {
   final int selectedIndex;
   final Function(int) onItemSelected;
+  final String userRole;
   const Sidebar({
     super.key,
     required this.selectedIndex,
     required this.onItemSelected,
+    required this.userRole,
   });
 
   @override
@@ -20,38 +22,51 @@ class Sidebar extends StatefulWidget {
 }
 
 class _SidebarState extends State<Sidebar> {
-  late List<SidebarModel> items;
+  List<SidebarModel> items = [];
 
   @override
   void initState() {
     super.initState();
-    items = [
-      SidebarModel(
-        icon: FontAwesomeIcons.house,
-        title: "Dashboard",
-        // page: StudentDashboard(),
-      ),
-      SidebarModel(
-        icon: FontAwesomeIcons.bookOpen,
-        title: "My Courses",
-        // page: StudentDashboard(),
-      ),
-      SidebarModel(
-        icon: FontAwesomeIcons.list,
-        title: "Exams",
-        // page: StudentDashboard(),
-      ),
-      SidebarModel(
-        icon: FontAwesomeIcons.calendar,
-        title: "Timetable",
-        // page: StudentDashboard(),
-      ),
-      SidebarModel(
-        icon: FontAwesomeIcons.chartLine,
-        title: "Results",
-        // page: StudentDashboard(),
-      ),
-    ];
+    _updateItemsForRole();
+  }
+
+  @override
+  void didUpdateWidget(covariant Sidebar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.userRole != oldWidget.userRole) {
+      _updateItemsForRole();
+    }
+  }
+
+  void _updateItemsForRole() {
+    setState(() {
+      if (widget.userRole == 'student') {
+        items = [
+          SidebarModel(icon: FontAwesomeIcons.house, title: "Dashboard"),
+          SidebarModel(icon: FontAwesomeIcons.bookOpen, title: "My Courses"),
+          SidebarModel(icon: FontAwesomeIcons.list, title: "Exams"),
+          SidebarModel(icon: FontAwesomeIcons.calendar, title: "Timetable"),
+          SidebarModel(icon: FontAwesomeIcons.chartLine, title: "Results"),
+        ];
+      } else {
+        // This is the list for other roles, e.g., 'lecturer'
+        // You can enter the sidebar models for the second part here.
+        items = [
+          SidebarModel(icon: FontAwesomeIcons.house, title: "Dashboard"),
+          SidebarModel(icon: FontAwesomeIcons.book, title: "Courses"),
+          SidebarModel(icon: FontAwesomeIcons.listCheck, title: "Exam"),
+          SidebarModel(
+            icon: FontAwesomeIcons.magnifyingGlass,
+            title: "Scan Papers",
+          ),
+          SidebarModel(
+            icon: FontAwesomeIcons.checkDouble,
+            title: "Review grades",
+          ),
+          SidebarModel(icon: FontAwesomeIcons.users, title: "Students"),
+        ];
+      }
+    });
   }
 
   @override
@@ -162,7 +177,9 @@ class _SidebarState extends State<Sidebar> {
                       ),
                     ),
                     Text(
-                      "Student",
+                      widget.userRole == 'student'
+                          ? "Student"
+                          : "Lecturer", // Example for other role
                       style: TextStyle(fontSize: 14, color: AppColor.greyText),
                     ),
                   ],
