@@ -73,7 +73,12 @@ class _StudentDashboardState extends State<StudentDashboard> {
             onItemSelected: changePage,
             userRole: widget.userRole,
           ),
-          Expanded(child: SingleChildScrollView(child: pages[selectedIndex])),
+          Expanded(
+            child: Material(
+              color: Colors.transparent,
+              child: SingleChildScrollView(child: pages[selectedIndex]),
+            ),
+          ),
         ],
       ),
     );

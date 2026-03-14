@@ -74,7 +74,12 @@ class _LecturerDashboardState extends State<LecturerDashboard> {
             onItemSelected: changePage,
             userRole: widget.userRole,
           ),
-          Expanded(child: SingleChildScrollView(child: pages[selectedIndex])),
+          Expanded(
+            child: Material(
+              color: Colors.transparent,
+              child: SingleChildScrollView(child: pages[selectedIndex]),
+            ),
+          ),
         ],
       ),
     );
