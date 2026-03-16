@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:examai/constants/app_color.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -11,26 +13,27 @@ class ScannerContainer extends StatefulWidget {
 }
 
 class _ScannerContainerState extends State<ScannerContainer> {
-  bool is_hovering = false;
+  bool ishovering = false;
+  final List<PlatformFile> _pickedFiles = [];
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
       onEnter: (_) => setState(() {
-        is_hovering = true;
+        ishovering = true;
       }),
       onExit: (_) => setState(() {
-        is_hovering = false;
+        ishovering = false;
       }),
       cursor: SystemMouseCursors.click,
       child: DottedBorder(
         options: RectDottedBorderOptions(
-          color: is_hovering ? AppColor.primaryBlue : AppColor.greyText,
+          color: ishovering ? AppColor.primaryBlue : AppColor.greyText,
           dashPattern: [6, 4],
           strokeWidth: 2,
         ),
         child: Container(
-          height: 300,
           width: double.infinity,
+          constraints: const BoxConstraints(minHeight: 300),
           decoration: BoxDecoration(
             color: Colors.transparent,
             borderRadius: BorderRadius.circular(20),
@@ -67,10 +70,18 @@ class _ScannerContainerState extends State<ScannerContainer> {
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    FilePickerResult? result = await FilePicker.platform
+                        .pickFiles(type: FileType.image, allowMultiple: true);
+                    if (result != null) {
+                      setState(() {
+                        _pickedFiles.addAll(result.files);
+                      });
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColor.primaryBlue,
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -96,10 +107,69 @@ class _ScannerContainerState extends State<ScannerContainer> {
                   ),
                 ),
                 SizedBox(height: 20),
-                Text(
-                  "Supports PDF, JPG, PNG • Max 50MB per file",
-                  style: TextStyle(fontSize: 10, color: AppColor.greyText),
-                ),
+                if (_pickedFiles.isNotEmpty)
+                  Wrap(
+                    spacing: 10.0,
+                    runSpacing: 10.0,
+                    children: List.generate(_pickedFiles.length, (index) {
+                      final file = _pickedFiles[index];
+                      return SizedBox(
+                        width: 150,
+                        child: Column(
+                          children: [
+                            Stack(
+                              alignment: Alignment.topRight,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: Image.file(
+                                    File(file.path!),
+                                    width: 150,
+                                    height: 150,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      _pickedFiles.removeAt(index);
+                                    });
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withOpacity(0.6),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(
+                                      Icons.close,
+                                      color: Colors.white,
+                                      size: 18,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              file.name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: AppColor.greyText,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+                  )
+                else
+                  Text(
+                    "Supports PDF, JPG, PNG • Max 50MB per file",
+                    style: TextStyle(fontSize: 10, color: AppColor.greyText),
+                  ),
               ],
             ),
           ),

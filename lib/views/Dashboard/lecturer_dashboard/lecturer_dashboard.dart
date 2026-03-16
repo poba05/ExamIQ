@@ -1,4 +1,4 @@
-import 'package:examai/views/Dashboard/student_dashboard/dashboard.dart';
+import 'package:examai/views/Dashboard/dashboard.dart';
 import 'package:examai/views/Dashboard/student_dashboard/sidebar.dart';
 import 'package:flutter/material.dart';
 
@@ -74,12 +74,7 @@ class _LecturerDashboardState extends State<LecturerDashboard> {
             onItemSelected: changePage,
             userRole: widget.userRole,
           ),
-          Expanded(
-            child: Material(
-              color: Colors.transparent,
-              child: SingleChildScrollView(child: pages[selectedIndex]),
-            ),
-          ),
+          Expanded(child: SingleChildScrollView(child: pages[selectedIndex])),
         ],
       ),
     );
