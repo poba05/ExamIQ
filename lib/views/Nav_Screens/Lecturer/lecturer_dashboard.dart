@@ -1,5 +1,8 @@
-import 'package:examai/views/Dashboard/dashboard.dart';
-import 'package:examai/views/Dashboard/student_dashboard/sidebar.dart';
+import 'package:examai/constants/app_color.dart';
+import 'package:examai/data/lecturer_cousrses.dart';
+import 'package:examai/views/Nav_Screens/Lecturer/lecturer_courses.dart';
+import 'package:examai/views/Nav_Screens/dashboard.dart';
+import 'package:examai/views/Nav_Screens/sidebar.dart';
 import 'package:flutter/material.dart';
 
 class LecturerDashboard extends StatefulWidget {
@@ -47,11 +50,11 @@ class _LecturerDashboardState extends State<LecturerDashboard> {
         Dashboard(
           userRole: widget.userRole,
         ), // You might want a different dashboard for other roles
-        const Center(child: Text("Courses Content")),
+        LecturerCourses(),
         const Center(child: Text("Create Exam Content")),
         const Center(child: Text("Students Content")),
         const Center(child: Text("Analytics Content")),
-        const Center(child: Text("Students content")),
+        const Center(child: Text("Settings Content")),
       ];
     }
   }
@@ -65,7 +68,7 @@ class _LecturerDashboardState extends State<LecturerDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: AppColor.palebackground,
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

@@ -1,5 +1,6 @@
-import 'package:examai/views/Dashboard/dashboard.dart';
-import 'package:examai/views/Dashboard/student_dashboard/sidebar.dart';
+import 'package:examai/constants/app_color.dart';
+import 'package:examai/views/Nav_Screens/dashboard.dart';
+import 'package:examai/views/Nav_Screens/sidebar.dart';
 import 'package:flutter/material.dart';
 
 class StudentDashboard extends StatefulWidget {
@@ -64,7 +65,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: AppColor.palebackground,
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

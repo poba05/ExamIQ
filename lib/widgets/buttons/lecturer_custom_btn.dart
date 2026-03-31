@@ -58,10 +58,14 @@ class _LecturerCustomBtnState extends State<LecturerCustomBtn> {
                 height: 50, //
                 width: 50, //
                 decoration: BoxDecoration(
-                  color: widget.iconbg,
+                  color: _isHovering ? widget.iconcolor : widget.iconbg,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Icon(widget.icon, color: widget.iconcolor, size: 20),
+                child: Icon(
+                  widget.icon,
+                  color: _isHovering ? AppColor.white : widget.iconcolor,
+                  size: 20,
+                ),
               ),
               const SizedBox(height: 15),
               Text(

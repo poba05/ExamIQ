@@ -1,5 +1,6 @@
 import 'package:examai/views/popups/newcourse.dart';
 import 'package:examai/views/popups/newexam.dart';
+import 'package:examai/views/popups/reviewexam.dart';
 import 'package:examai/views/popups/scanfile.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -64,8 +65,10 @@ final lecturerbtndata = [
     "ontap": (context) {
       showDialog(
         context: context,
-        builder: (context) =>
-            const Dialog(backgroundColor: Colors.transparent, child: Newexam()),
+        builder: (context) => const Dialog(
+          backgroundColor: Colors.transparent,
+          child: Reviewexam(),
+        ),
       );
     },
   },

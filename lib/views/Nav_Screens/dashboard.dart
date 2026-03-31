@@ -1,6 +1,5 @@
 import 'package:examai/data/student_summary_list.dart';
-import 'package:examai/widgets/dashboard_widgets/lecturerDashboard/mycoursescontainer.dart';
-import 'package:examai/widgets/dashboard_widgets/lecturerDashboard/scannercontainer.dart';
+import 'package:examai/widgets/dashboard_widgets/lecturerDashboard/recentstudents.dart';
 import 'package:examai/widgets/dashboard_widgets/lecturerDashboard/dahsboard_header_lt.dart';
 import 'package:examai/widgets/dashboard_widgets/lecturerDashboard/hotbuttons.dart';
 import 'package:examai/widgets/dashboard_widgets/lecturerDashboard/reviewcontainer.dart';
@@ -55,21 +54,25 @@ class StudentContent extends StatelessWidget {
                   final index = entry.key;
                   final items = entry.value;
                   return Expanded(
-                        // Each card is a container with styling.
-                        child: Summarycard(
-                          iconbg: items["iconbg"] as Color,
-                          icon: items["icon"] as IconData,
-                          boldtext: items["Bold_text"] as String,
-                          greytext: items["grey_text"] as String,
-                          iconcolor: items["icon_color"] as Color,
-                          colortext: items["color_text"] as String,
-                          textcolor: items["text_color"] as Color,
-                        ),
-                      )
-                      // Animate the card with a fade-in and slide-up effect.
-                      .animate()
-                      .fadeIn(delay: (200 + (index * 100)).ms, duration: 500.ms)
-                      .slideY(begin: 0.5);
+                    // Each card is a container with styling.
+                    child:
+                        Summarycard(
+                              iconbg: items["iconbg"] as Color,
+                              icon: items["icon"] as IconData,
+                              boldtext: items["Bold_text"] as String,
+                              greytext: items["grey_text"] as String,
+                              iconcolor: items["icon_color"] as Color,
+                              colortext: items["color_text"] as String,
+                              textcolor: items["text_color"] as Color,
+                            )
+                            // Animate the card with a fade-in and slide-up effect.
+                            .animate()
+                            .fadeIn(
+                              delay: (200 + (index * 100)).ms,
+                              duration: 500.ms,
+                            )
+                            .slideY(begin: 0.5),
+                  );
                 }).toList(),
               ),
               SizedBox(height: 20),
@@ -95,11 +98,11 @@ class Lecturercontent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        DahsboardHeaderLt(),
+        DashboardHeaderLt(),
         SizedBox(height: 20),
         // Main content area of the dashboard with padding.
         Padding(
-          padding: EdgeInsets.all(10.0),
+          padding: EdgeInsets.all(20.0),
           child: Column(
             children: [
               // Row of summary cards (Enrolled Courses, Active Exams, etc.).
@@ -107,11 +110,16 @@ class Lecturercontent extends StatelessWidget {
               SizedBox(height: 5),
               Hotbuttons(),
               SizedBox(height: 20),
-              Reviewcontainer(),
-              SizedBox(height: 20),
-              Scannercontainer(),
-              SizedBox(height: 20),
-              Mycoursescontainer(),
+              //
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(child: Reviewcontainer()),
+                  SizedBox(width: 20),
+                  Expanded(child: Recentstudents()),
+                ],
+              ),
             ],
           ),
         ),

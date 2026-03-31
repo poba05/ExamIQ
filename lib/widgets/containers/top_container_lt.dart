@@ -1,11 +1,18 @@
 import 'package:examai/constants/app_color.dart';
-import 'package:examai/views/popups/newexam.dart';
 import 'package:examai/widgets/buttons/gradient_button_lg.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class DashboardHeaderLt extends StatelessWidget {
-  const DashboardHeaderLt({super.key});
+class TopContainerLt extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final Function onPressed;
+  const TopContainerLt({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,33 +20,30 @@ class DashboardHeaderLt extends StatelessWidget {
       height: 100,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: AppColor.white,
         border: Border(
-          bottom: BorderSide(color: Colors.grey.shade300, width: 1),
+          bottom: BorderSide(color: Colors.grey.shade200, width: 1.0),
         ),
+        color: AppColor.white,
       ),
       child: Padding(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20.0),
         child: Row(
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Lecturer Dashboard",
+                  title,
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: AppColor.black,
                   ),
                 ),
+                SizedBox(height: 5),
                 Text(
-                  "Manage Courses, exams and Student grades",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w100,
-                    color: AppColor.greyText,
-                  ),
+                  subtitle,
+                  style: TextStyle(fontSize: 14, color: AppColor.greyText),
                 ),
               ],
             ),
@@ -47,15 +51,7 @@ class DashboardHeaderLt extends StatelessWidget {
             GradientButtonLg(
               horizontalPadding: 20,
               verticalPadding: 20,
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => const Dialog(
-                    backgroundColor: Colors.transparent,
-                    child: Newexam(),
-                  ),
-                );
-              },
+              onPressed: () => onPressed(context),
               child: Row(
                 children: [
                   Icon(FontAwesomeIcons.plus, color: AppColor.white, size: 16),
@@ -71,7 +67,7 @@ class DashboardHeaderLt extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(width: 25),
+            SizedBox(width: 5),
             Icon(
               FontAwesomeIcons.solidBell,
               color: AppColor.greyText,

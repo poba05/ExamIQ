@@ -91,16 +91,19 @@ class Mycoursescontainer extends StatelessWidget {
                 crossAxisCount: 3,
                 crossAxisSpacing: 20,
                 mainAxisSpacing: 20,
-                childAspectRatio: 1.3,
+                childAspectRatio: 0.8,
               ),
               itemBuilder: (context, index) {
                 return CoursesContainer(
-                  color1: lecturerCourses[index]["iconbg"] as Color,
-                  color2: lecturerCourses[index]["iconcolor"] as Color,
+                  iconbackground: lecturerCourses[index]["iconbg"] as Color,
+                  iconcolor: lecturerCourses[index]["iconcolor"] as Color,
                   icon: lecturerCourses[index]["mainicon"] as IconData,
                   title: lecturerCourses[index]["mainText"] as String,
-                  description: lecturerCourses[index]["subText"] as String,
+                  description: lecturerCourses[index]["description"] as String,
                   students: lecturerCourses[index]["students"] as int,
+                  exams: lecturerCourses[index]["exams"] as int,
+                  average: lecturerCourses[index]["average"] as String,
+                  subtitle: lecturerCourses[index]["subText"] as String,
                 );
               },
             ),

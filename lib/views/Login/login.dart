@@ -1,7 +1,7 @@
 import 'package:examai/constants/app_color.dart';
 import 'package:examai/models/user_role.dart';
-import 'package:examai/views/Dashboard/lecturer_dashboard/lecturer_dashboard.dart';
-import 'package:examai/views/Dashboard/student_dashboard/student_dashboard.dart';
+import 'package:examai/views/Nav_Screens/Lecturer/lecturer_dashboard.dart';
+import 'package:examai/views/Nav_Screens/Student/student_dashboard.dart';
 import 'package:examai/views/Landing/landing_page.dart';
 import 'package:examai/widgets/buttons/gradient_button_lg.dart';
 import 'package:examai/widgets/containers/gradient_container.dart';
