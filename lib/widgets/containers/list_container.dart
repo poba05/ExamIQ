@@ -4,16 +4,18 @@ class ListContainer extends StatefulWidget {
   final String title;
   final String description;
   final IconData icon;
-  final Color color1;
-  final Color color2;
+  final Color iconcolor;
+  final Color iconbg;
+  final Color backgroundColor;
 
   const ListContainer({
     super.key,
     required this.title,
     required this.description,
     required this.icon,
-    required this.color1,
-    required this.color2,
+    required this.iconcolor,
+    required this.iconbg,
+    required this.backgroundColor,
   });
 
   @override
@@ -35,7 +37,7 @@ class _ListContainerState extends State<ListContainer> {
             ? (Matrix4.identity()..translate(0.0, -10.0, 0.0))
             : Matrix4.identity(),
         decoration: BoxDecoration(
-          color: widget.color2,
+          color: widget.backgroundColor,
           borderRadius: BorderRadius.circular(20),
           boxShadow: _isHovered
               ? [
@@ -59,11 +61,13 @@ class _ListContainerState extends State<ListContainer> {
                   height: 60,
                   width: 60,
                   decoration: BoxDecoration(
-                    color: widget.color1,
+                    color: widget.iconbg,
                     borderRadius: BorderRadius.circular(15),
                   ),
                   alignment: Alignment.center,
-                  child: Icon(widget.icon, color: Colors.white, size: 25),
+                  child: Center(
+                    child: Icon(widget.icon, color: widget.iconcolor, size: 25),
+                  ),
                 ),
                 SizedBox(height: 20),
                 Text(

@@ -1,6 +1,9 @@
 import 'package:examai/constants/app_color.dart';
-import 'package:examai/data/lecturer_cousrses.dart';
 import 'package:examai/views/Nav_Screens/Lecturer/lecturer_courses.dart';
+import 'package:examai/views/Nav_Screens/Lecturer/lecturer_exams_page.dart';
+import 'package:examai/views/Nav_Screens/Lecturer/lecturer_review_page.dart';
+import 'package:examai/views/Nav_Screens/Lecturer/lecturer_scan_page.dart';
+import 'package:examai/views/Nav_Screens/Lecturer/lecutrer_student_page.dart';
 import 'package:examai/views/Nav_Screens/dashboard.dart';
 import 'package:examai/views/Nav_Screens/sidebar.dart';
 import 'package:flutter/material.dart';
@@ -51,10 +54,10 @@ class _LecturerDashboardState extends State<LecturerDashboard> {
           userRole: widget.userRole,
         ), // You might want a different dashboard for other roles
         LecturerCourses(),
-        const Center(child: Text("Create Exam Content")),
-        const Center(child: Text("Students Content")),
-        const Center(child: Text("Analytics Content")),
-        const Center(child: Text("Settings Content")),
+        LecturerExamsPage(),
+        LecturerScanPage(),
+        LecturerReviewPage(),
+        LecutrerStudentPage(),
       ];
     }
   }

@@ -81,7 +81,7 @@ class Reviewcontainer extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  context["mainText"] as String,
+                                  context["coursetitle"] as String,
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -90,7 +90,7 @@ class Reviewcontainer extends StatelessWidget {
                                 ),
                                 SizedBox(height: 5),
                                 Text(
-                                  context["subText"] as String,
+                                  context["coursecode"] as String,
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: AppColor.greyText,

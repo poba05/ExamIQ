@@ -6,6 +6,7 @@ import 'package:examai/widgets/containers/courses_container.dart';
 import 'package:examai/widgets/containers/top_container_lt.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class LecturerCourses extends StatefulWidget {
   const LecturerCourses({super.key});
@@ -102,14 +103,14 @@ class _LecturerCoursesState extends State<LecturerCourses> {
                     iconbackground: lecturerCourses[index]["iconbg"] as Color,
                     iconcolor: lecturerCourses[index]["iconcolor"] as Color,
                     icon: lecturerCourses[index]["mainicon"] as IconData,
-                    title: lecturerCourses[index]["mainText"] as String,
-                    subtitle: lecturerCourses[index]["subText"] as String,
+                    title: lecturerCourses[index]["coursetitle"] as String,
+                    subtitle: lecturerCourses[index]["coursecode"] as String,
                     description:
                         lecturerCourses[index]["description"] as String,
                     students: lecturerCourses[index]["students"] as int,
                     exams: lecturerCourses[index]["exams"] as int,
                     average: lecturerCourses[index]["average"] as String,
-                  );
+                  ).animate().fadeIn(delay: (index * 200).ms).flipH();
                 },
               ),
             ],

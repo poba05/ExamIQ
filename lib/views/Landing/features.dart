@@ -111,8 +111,9 @@ class _FeaturesState extends State<Features> {
                   title: item["title"] as String,
                   description: item["description"] as String,
                   icon: item["icon"] as IconData,
-                  color1: item["color1"] as Color,
-                  color2: item["color2"] as Color,
+                  iconbg: item["color1"] as Color,
+                  iconcolor: AppColor.white,
+                  backgroundColor: item["color2"] as Color,
                 );
               },
             ),

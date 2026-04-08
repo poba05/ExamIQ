@@ -1,5 +1,4 @@
 import 'package:examai/constants/app_color.dart';
-import 'package:examai/widgets/buttons/basic_button.dart';
 import 'package:examai/widgets/buttons/gradient_button_lg.dart';
 import 'package:examai/widgets/special_widgets/dropdown.dart';
 import 'package:examai/widgets/textfields/Custom_textfield.dart';

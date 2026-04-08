@@ -36,7 +36,7 @@ class TopContainerLt extends StatelessWidget {
                   title,
                   style: TextStyle(
                     fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w800,
                     color: AppColor.black,
                   ),
                 ),
