@@ -92,25 +92,30 @@ class _LecturerCoursesState extends State<LecturerCourses> {
                 itemCount: lecturerCourses.length,
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                  childAspectRatio: 0.95,
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 400,
+                  crossAxisSpacing: 15,
+                  mainAxisSpacing: 15,
+                  childAspectRatio: 1.0,
                 ),
                 itemBuilder: (context, index) {
                   return CoursesContainer(
-                    iconbackground: lecturerCourses[index]["iconbg"] as Color,
-                    iconcolor: lecturerCourses[index]["iconcolor"] as Color,
-                    icon: lecturerCourses[index]["mainicon"] as IconData,
-                    title: lecturerCourses[index]["coursetitle"] as String,
-                    subtitle: lecturerCourses[index]["coursecode"] as String,
-                    description:
-                        lecturerCourses[index]["description"] as String,
-                    students: lecturerCourses[index]["students"] as int,
-                    exams: lecturerCourses[index]["exams"] as int,
-                    average: lecturerCourses[index]["average"] as String,
-                  ).animate().fadeIn(delay: (index * 200).ms).flipH();
+                        iconbackground:
+                            lecturerCourses[index]["iconbg"] as Color,
+                        iconcolor: lecturerCourses[index]["iconcolor"] as Color,
+                        icon: lecturerCourses[index]["mainicon"] as IconData,
+                        title: lecturerCourses[index]["coursetitle"] as String,
+                        subtitle:
+                            lecturerCourses[index]["coursecode"] as String,
+                        description:
+                            lecturerCourses[index]["description"] as String,
+                        students: lecturerCourses[index]["students"] as int,
+                        exams: lecturerCourses[index]["exams"] as int,
+                        average: lecturerCourses[index]["average"] as String,
+                      )
+                      .animate()
+                      .fadeIn(delay: (index * 200).ms)
+                      .slideY(begin: 0.1, end: 0, curve: Curves.easeOutQuad);
                 },
               ),
             ],

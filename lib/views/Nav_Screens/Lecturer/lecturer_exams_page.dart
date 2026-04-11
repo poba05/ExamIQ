@@ -28,23 +28,30 @@ class _LecturerExamsPageState extends State<LecturerExamsPage> {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                "Create and Manage all your Exams",
-                style: TextStyle(fontSize: 16, color: AppColor.greyText),
+              Expanded(
+                child: Text(
+                  "Create and Manage all your Exams",
+                  style: TextStyle(fontSize: 14, color: AppColor.greyText),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
+              const SizedBox(width: 16),
               GradientButtonLg(
-                horizontalPadding: 20,
-                verticalPadding: 15,
+                horizontalPadding: 24,
+                verticalPadding: 12,
                 onPressed: () {},
-                child: Row(
+                child: const Row(
                   children: [
-                    Icon(FontAwesomeIcons.plus, size: 16, color: Colors.white),
-                    SizedBox(width: 3),
+                    Icon(FontAwesomeIcons.plus, size: 14, color: Colors.white),
+                    SizedBox(width: 8),
                     Text(
                       "Create Exam",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
@@ -60,21 +67,28 @@ class _LecturerExamsPageState extends State<LecturerExamsPage> {
               final index = entry.key;
               final courses = entry.value;
               return LecturerExamCont(
-                title: courses['coursetitle'] as String,
-                subtitle: courses['coursecode'] as String,
-                iconbg: courses['iconbg'] as Color,
-                iconcolor: courses['iconcolor'] as Color,
-                timeduration: courses['duration'] as int,
-                noofquestions: courses['questions'] as int,
-                noofstudents: courses['students'] as int,
-                average: courses['average'] as String,
-                submittedprogress: courses['submittedprogress'] as int,
-                submittedtotal: courses['submittedtotal'] as int,
-                gradedprogress: courses['Gradedprogress'] as int,
-                gradedtotal: courses['Gradedtotal'] as int,
-                gradedreview: courses['gradedreview'] as int,
-                dateandtime: courses['dateandtime'] as String,
-              ).animate().fadeIn(delay: (index * 200).ms).flipH();
+                    title: courses['coursetitle']?.toString() ?? "N/A",
+                    subtitle: courses['coursecode']?.toString() ?? "",
+                    iconbg: courses['iconbg'] as Color? ?? Colors.grey.shade100,
+                    iconcolor: courses['iconcolor'] as Color? ?? Colors.grey,
+                    timeduration: (courses['duration'] as num?)?.toInt() ?? 0,
+                    noofquestions: (courses['questions'] as num?)?.toInt() ?? 0,
+                    noofstudents: (courses['students'] as num?)?.toInt() ?? 0,
+                    average: courses['average']?.toString() ?? "0%",
+                    submittedprogress:
+                        (courses['submittedprogress'] as num?)?.toInt() ?? 0,
+                    submittedtotal:
+                        (courses['submittedtotal'] as num?)?.toInt() ?? 0,
+                    gradedprogress:
+                        (courses['Gradedprogress'] as num?)?.toInt() ?? 0,
+                    gradedtotal: (courses['Gradedtotal'] as num?)?.toInt() ?? 0,
+                    gradedreview:
+                        (courses['gradedreview'] as num?)?.toInt() ?? 0,
+                    dateandtime: courses['dateandtime']?.toString() ?? "",
+                  )
+                  .animate()
+                  .fadeIn(delay: (index * 200).ms)
+                  .slideY(begin: 0.1, end: 0, curve: Curves.easeOutQuad);
             }).toList(),
           ),
         ),

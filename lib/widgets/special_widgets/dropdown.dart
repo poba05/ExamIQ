@@ -15,7 +15,7 @@ class _DropdownState extends State<Dropdown> {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
       value: selectedCourse,
-      hint: Text("Select an option"),
+      hint: Text("Select option"),
 
       items: widget.mylist.map((course) {
         return DropdownMenuItem(value: course, child: Text(course));

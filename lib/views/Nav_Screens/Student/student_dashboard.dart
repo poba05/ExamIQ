@@ -2,6 +2,7 @@ import 'package:examai/constants/app_color.dart';
 import 'package:examai/views/Nav_Screens/dashboard.dart';
 import 'package:examai/views/Nav_Screens/sidebar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class StudentDashboard extends StatefulWidget {
   final String userRole;
@@ -74,7 +75,12 @@ class _StudentDashboardState extends State<StudentDashboard> {
             onItemSelected: changePage,
             userRole: widget.userRole,
           ),
-          Expanded(child: SingleChildScrollView(child: pages[selectedIndex])),
+          Expanded(
+            child: SingleChildScrollView(child: pages[selectedIndex])
+                .animate(key: ValueKey(selectedIndex))
+                .fadeIn(duration: 400.ms)
+                .slideX(begin: 0.02, end: 0, curve: Curves.easeInOut),
+          ),
         ],
       ),
     );

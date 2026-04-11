@@ -42,17 +42,20 @@ class _SidebarState extends State<Sidebar> {
     setState(() {
       if (widget.userRole == 'student') {
         items = [
-          SidebarModel(icon: FontAwesomeIcons.house, title: "Dashboard"),
+          SidebarModel(icon: FontAwesomeIcons.solidHouse, title: "Dashboard"),
           SidebarModel(icon: FontAwesomeIcons.bookOpen, title: "My Courses"),
           SidebarModel(icon: FontAwesomeIcons.list, title: "Exams"),
-          SidebarModel(icon: FontAwesomeIcons.calendar, title: "Timetable"),
+          SidebarModel(
+            icon: FontAwesomeIcons.solidCalendar,
+            title: "Timetable",
+          ),
           SidebarModel(icon: FontAwesomeIcons.chartLine, title: "Results"),
         ];
       } else {
         // This is the list for other roles, e.g., 'lecturer'
         // You can enter the sidebar models for the second part here.
         items = [
-          SidebarModel(icon: FontAwesomeIcons.house, title: "Dashboard"),
+          SidebarModel(icon: FontAwesomeIcons.solidHouse, title: "Dashboard"),
           SidebarModel(icon: FontAwesomeIcons.book, title: "Courses"),
           SidebarModel(icon: FontAwesomeIcons.listCheck, title: "Exam"),
           SidebarModel(
@@ -64,6 +67,11 @@ class _SidebarState extends State<Sidebar> {
             title: "Review grades",
           ),
           SidebarModel(icon: FontAwesomeIcons.users, title: "Students"),
+          SidebarModel(
+            icon: FontAwesomeIcons.solidCalendar,
+            title: "Timetable",
+          ),
+          SidebarModel(icon: FontAwesomeIcons.chartLine, title: "Analytics"),
         ];
       }
     });
@@ -109,7 +117,7 @@ class _SidebarState extends State<Sidebar> {
           ),
           SizedBox(height: 20),
           Divider(color: Colors.grey.shade300, thickness: 1),
-          SizedBox(height: 20),
+          SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
