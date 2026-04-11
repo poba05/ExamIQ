@@ -82,7 +82,7 @@ class _LecturerStudentPageState extends State<LecturerStudentPage> {
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.04),
+                              color: Colors.black.withValues(alpha: 0.04),
                               blurRadius: 10,
                               offset: const Offset(0, 4),
                             ),
@@ -98,9 +98,9 @@ class _LecturerStudentPageState extends State<LecturerStudentPage> {
                                 height: 40,
                                 width: 40,
                                 decoration: BoxDecoration(
-                                  color:
-                                      item["iconbg"] as Color? ??
-                                      Colors.grey.shade100,
+                                  color: item["iconbg"] is Color
+                                      ? item["iconbg"] as Color
+                                      : Colors.grey.shade100,
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Icon(
@@ -147,7 +147,7 @@ class _LecturerStudentPageState extends State<LecturerStudentPage> {
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.04),
+                          color: Colors.black.withValues(alpha: 0.04),
                           blurRadius: 15,
                           offset: const Offset(0, 6),
                         ),
@@ -184,7 +184,7 @@ class _LecturerStudentPageState extends State<LecturerStudentPage> {
                                   children: [
                                     /// SEARCH
                                     SizedBox(
-                                      width: 210,
+                                      width: 240,
                                       child: TextField(
                                         decoration: InputDecoration(
                                           hintText: "Search students...",
@@ -222,7 +222,7 @@ class _LecturerStudentPageState extends State<LecturerStudentPage> {
 
                                     /// DROPDOWN
                                     SizedBox(
-                                      width: 150,
+                                      width: 160,
                                       child: Dropdown(
                                         mylist: const [
                                           "All Status",
@@ -626,7 +626,7 @@ class _LecturerStudentPageState extends State<LecturerStudentPage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: AppColor.primaryBlue.withOpacity(0.1),
+        color: AppColor.primaryBlue.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(6),
       ),
       child: Text(

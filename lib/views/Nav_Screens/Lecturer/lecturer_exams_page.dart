@@ -69,8 +69,12 @@ class _LecturerExamsPageState extends State<LecturerExamsPage> {
               return LecturerExamCont(
                     title: courses['coursetitle']?.toString() ?? "N/A",
                     subtitle: courses['coursecode']?.toString() ?? "",
-                    iconbg: courses['iconbg'] as Color? ?? Colors.grey.shade100,
-                    iconcolor: courses['iconcolor'] as Color? ?? Colors.grey,
+                    iconbg: courses['iconbg'] is Color
+                        ? courses['iconbg'] as Color
+                        : Colors.grey.shade100,
+                    iconcolor: courses['iconcolor'] is Color
+                        ? courses['iconcolor'] as Color
+                        : Colors.grey,
                     timeduration: (courses['duration'] as num?)?.toInt() ?? 0,
                     noofquestions: (courses['questions'] as num?)?.toInt() ?? 0,
                     noofstudents: (courses['students'] as num?)?.toInt() ?? 0,

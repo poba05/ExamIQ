@@ -4,7 +4,7 @@ import 'lecturer_exams_page.dart';
 import 'lecturer_review_page.dart';
 import 'lecturer_scan_page.dart';
 import 'lecturer_timetable.dart';
-import 'lecutrer_student_page.dart';
+import 'lecturer_student_page.dart';
 import 'package:examai/views/Nav_Screens/dashboard.dart';
 import 'package:examai/views/Nav_Screens/sidebar.dart';
 import 'package:flutter/material.dart';
