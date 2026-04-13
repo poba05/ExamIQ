@@ -16,7 +16,7 @@ final students = [
     "student_id": "STU123456",
     "gpa": 3.9,
     "status": "Active",
-    "last_active": "3\n hours\n ago",
+    "last_active": "3 hours ago",
   },
   {
     "id": 2,
@@ -50,7 +50,7 @@ final students = [
     "student_id": "STU123458",
     "gpa": 3.6,
     "status": "Active",
-    "last_active": "5\n hours\n ago",
+    "last_active": "5 hours ago",
   },
   {
     "id": 4,
@@ -67,7 +67,7 @@ final students = [
     "student_id": "STU123459",
     "gpa": 3.2,
     "status": "Active",
-    "last_active": "30\n minutes\n ago",
+    "last_active": "30 minutes ago",
   },
   {
     "id": 5,
@@ -101,7 +101,7 @@ final students = [
     "student_id": "STU123461",
     "gpa": 3.0,
     "status": "Active",
-    "last_active": "7\n hours\n ago",
+    "last_active": "7 hours ago",
   },
   {
     "id": 7,
@@ -118,7 +118,7 @@ final students = [
     "student_id": "STU123462",
     "gpa": 2.4,
     "status": "Active",
-    "last_active": "40\n minutes\n ago",
+    "last_active": "40 minutes ago",
   },
   {
     "id": 8,
@@ -135,6 +135,6 @@ final students = [
     "student_id": "STU123463",
     "gpa": 4.0,
     "status": "Active",
-    "last_active": "30\n seconds\n ago",
+    "last_active": "30 seconds ago",
   },
 ];

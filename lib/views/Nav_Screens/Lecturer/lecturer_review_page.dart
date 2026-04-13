@@ -1,6 +1,5 @@
 import 'package:examai/constants/app_color.dart';
 import 'package:examai/data/lecturer_cousrses.dart';
-import 'package:examai/widgets/containers/list_container.dart';
 import 'package:examai/widgets/containers/top_container_lt.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

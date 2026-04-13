@@ -1,7 +1,6 @@
 import 'package:examai/constants/app_color.dart';
 import 'package:examai/data/lecturer_cousrses.dart';
 import 'package:examai/views/popups/newcourse.dart';
-import 'package:examai/views/popups/newexam.dart';
 import 'package:examai/widgets/containers/courses_container.dart';
 import 'package:examai/widgets/containers/top_container_lt.dart';
 import 'package:flutter/material.dart';
@@ -23,13 +22,15 @@ class _LecturerCoursesState extends State<LecturerCourses> {
       children: [
         TopContainerLt(
           title: "Courses",
-          subtitle: "Welcome back, Mr.Smith",
+          subtitle: "Welcome back, Mr. Smith",
+          buttonLabel: "Create Course",
+          buttonIcon: FontAwesomeIcons.plus,
           onPressed: (context) {
             showDialog(
               context: context,
               builder: (context) => const Dialog(
                 backgroundColor: Colors.transparent,
-                child: Newexam(),
+                child: Newcourse(),
               ),
             );
           },

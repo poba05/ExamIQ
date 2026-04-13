@@ -1,4 +1,8 @@
 import 'package:examai/constants/app_color.dart';
+import 'package:examai/views/Nav_Screens/Student/student_courses_page.dart';
+import 'package:examai/views/Nav_Screens/Student/student_exams_page.dart';
+import 'package:examai/views/Nav_Screens/Student/student_timetable_page.dart';
+import 'package:examai/views/Nav_Screens/Student/student_results_page.dart';
 import 'package:examai/views/Nav_Screens/dashboard.dart';
 import 'package:examai/views/Nav_Screens/sidebar.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +23,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
   @override
   void initState() {
     super.initState();
-    _updatePagesForRole();
+    _buildPages();
   }
 
   @override
@@ -27,34 +31,20 @@ class _StudentDashboardState extends State<StudentDashboard> {
     super.didUpdateWidget(oldWidget);
     if (widget.userRole != oldWidget.userRole) {
       setState(() {
-        _updatePagesForRole();
-        // Reset index to avoid errors if the new list is shorter
+        _buildPages();
         selectedIndex = 0;
       });
     }
   }
 
-  void _updatePagesForRole() {
-    if (widget.userRole == 'student') {
-      pages = [
-        Dashboard(userRole: widget.userRole),
-        const Center(child: Text("My Courses Content")),
-        const Center(child: Text("Exams Content")),
-        const Center(child: Text("Timetable Content")),
-        const Center(child: Text("Results Content")),
-      ];
-    } else {
-      // Corresponds to the other role's sidebar items
-      pages = [
-        Dashboard(
-          userRole: widget.userRole,
-        ), // You might want a different dashboard for other roles
-        const Center(child: Text("Courses Content")),
-        const Center(child: Text("Create Exam Content")),
-        const Center(child: Text("Students Content")),
-        const Center(child: Text("Analytics Content")),
-      ];
-    }
+  void _buildPages() {
+    pages = [
+      Dashboard(userRole: widget.userRole),
+      StudentCoursesPage(),
+      StudentExamsPage(),
+      StudentTimetablePage(),
+      StudentResultsPage(),
+    ];
   }
 
   void changePage(int index) {

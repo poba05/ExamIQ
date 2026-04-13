@@ -8,55 +8,49 @@ class Features extends StatefulWidget {
       "id": 1,
       "title": "Automated Grading",
       "description":
-          "Save time and reduce errors with our AI-powered grading system.",
+          "Save time and reduce errors with our AI-powered grading system that grades in seconds.",
       "icon": Icons.auto_fix_high,
       "color1": Colors.blue,
-      "color2": Colors.blue.shade100,
     },
     {
       "id": 2,
       "title": "Detailed Analytics",
       "description":
-          "Gain insights into student performance with comprehensive analytics.",
+          "Gain deep insights into student performance with comprehensive charts and reports.",
       "icon": Icons.analytics,
       "color1": Colors.purple,
-      "color2": Colors.purple.shade100,
     },
     {
       "id": 3,
       "title": "Customizable Exams",
       "description":
-          "Create and customize exams to fit your specific needs and curriculum.",
-      "icon": Icons.edit,
+          "Create multi-format exams — MCQ, short answer, essays — tailored to your curriculum.",
+      "icon": Icons.edit_note,
       "color1": Colors.orange,
-      "color2": Colors.orange.shade100,
     },
     {
       "id": 4,
       "title": "Secure & Private",
       "description":
-          "Ensure data security and privacy with our robust platform.",
+          "Bank-level encryption and role-based access keep your data fully protected.",
       "icon": Icons.security,
       "color1": Colors.green,
-      "color2": Colors.green.shade100,
     },
     {
       "id": 5,
-      "title": "Customizable Exams",
+      "title": "Real-Time Monitoring",
       "description":
-          "Create and customize exams to fit your specific needs and curriculum.",
-      "icon": Icons.edit,
-      "color1": Colors.orange,
-      "color2": Colors.orange.shade100,
+          "Track live exam progress, flag anomalies, and monitor student activity in real time.",
+      "icon": Icons.monitor_heart,
+      "color1": Colors.teal,
     },
     {
       "id": 6,
-      "title": "Customizable Exams",
+      "title": "Instant Feedback",
       "description":
-          "Create and customize exams to fit your specific needs and curriculum.",
-      "icon": Icons.edit,
-      "color1": Colors.orange,
-      "color2": Colors.orange.shade100,
+          "Students receive detailed AI-generated feedback on their answers immediately after submission.",
+      "icon": Icons.feedback,
+      "color1": Colors.indigo,
     },
   ];
   const Features({super.key});
@@ -107,13 +101,14 @@ class _FeaturesState extends State<Features> {
               ),
               itemBuilder: (context, index) {
                 final item = Features.my_list[index];
+                final iconColor = item["color1"] as Color;
                 return ListContainer(
                   title: item["title"] as String,
                   description: item["description"] as String,
                   icon: item["icon"] as IconData,
-                  iconbg: item["color1"] as Color,
+                  iconbg: iconColor,
                   iconcolor: AppColor.white,
-                  backgroundColor: item["color2"] as Color,
+                  backgroundColor: AppColor.white,
                 );
               },
             ),

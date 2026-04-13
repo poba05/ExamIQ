@@ -255,7 +255,7 @@ class _HeroSectionState extends State<HeroSection> {
                 ],
               ),
               child: Padding(
-                padding: const EdgeInsetsGeometry.all(16),
+                padding: const EdgeInsets.all(16),
                 child: Image.asset("lib/assets/exam_pic.jpg", fit: BoxFit.fill),
               ),
             ),

@@ -7,11 +7,18 @@ class TopContainerLt extends StatelessWidget {
   final String title;
   final String subtitle;
   final Function onPressed;
-  const TopContainerLt({
+  final String buttonLabel;
+  final IconData buttonIcon;
+  final bool showButton;
+
+  TopContainerLt({
     super.key,
     required this.title,
     required this.subtitle,
     required this.onPressed,
+    this.buttonLabel = 'Create Exam',
+    this.buttonIcon = FontAwesomeIcons.plus,
+    this.showButton = true,
   });
 
   @override
@@ -26,11 +33,12 @@ class TopContainerLt extends StatelessWidget {
         color: AppColor.white,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(20.0),
         child: Row(
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   title,
@@ -43,31 +51,33 @@ class TopContainerLt extends StatelessWidget {
                 SizedBox(height: 5),
                 Text(
                   subtitle,
-                  style: TextStyle(fontSize: 14, color: AppColor.greyText),
+                  style:  TextStyle(fontSize: 14, color: AppColor.greyText),
                 ),
               ],
             ),
             Spacer(),
-            GradientButtonLg(
-              horizontalPadding: 20,
-              verticalPadding: 20,
-              onPressed: () => onPressed(context),
-              child: Row(
-                children: [
-                  Icon(FontAwesomeIcons.plus, color: AppColor.white, size: 16),
-                  SizedBox(width: 3),
-                  Text(
-                    "Create Exam",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppColor.white,
-                      fontWeight: FontWeight.bold,
+            if (showButton) ...[
+              GradientButtonLg(
+                horizontalPadding: 20,
+                verticalPadding: 20,
+                onPressed: () => onPressed(context),
+                child: Row(
+                  children: [
+                    Icon(buttonIcon, color: AppColor.white, size: 16),
+                    SizedBox(width: 8),
+                    Text(
+                      buttonLabel,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: AppColor.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            SizedBox(width: 5),
+              SizedBox(width: 5),
+            ],
             Icon(
               FontAwesomeIcons.solidBell,
               color: AppColor.greyText,

@@ -19,7 +19,7 @@ class LecturerExamCont extends StatefulWidget {
   final int gradedtotal;
   final int gradedreview;
   final String dateandtime;
-  const LecturerExamCont({
+  LecturerExamCont({
     super.key,
     required this.title,
     required this.subtitle,
@@ -51,11 +51,11 @@ class _LecturerExamContState extends State<LecturerExamCont> {
       onEnter: (_) => setState(() => ishovering = true),
       onExit: (_) => setState(() => ishovering = false),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
+        duration: Duration(milliseconds: 200),
         curve: Curves.easeInOut,
         // Using translationValues is safer for interpolation
         transform: Matrix4.translationValues(0, ishovering ? -6 : 0, 0),
-        margin: const EdgeInsets.only(bottom: 20.0, left: 2, right: 2),
+        margin: EdgeInsets.only(bottom: 20.0, left: 2, right: 2),
         decoration: BoxDecoration(
           color: AppColor.white,
           borderRadius: BorderRadius.circular(20),
@@ -67,13 +67,13 @@ class _LecturerExamContState extends State<LecturerExamCont> {
               spreadRadius: ishovering ? 4 : 1,
               blurRadius: ishovering ? 15 : 5,
               offset: ishovering
-                  ? const Offset(0, 10)
-                  : const Offset(0, 3), // Deeper shadow when raised
+                  ? Offset(0, 10)
+                  : Offset(0, 3), // Deeper shadow when raised
             ),
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(16),
           child: Column(
             children: [
               Row(
@@ -91,81 +91,81 @@ class _LecturerExamContState extends State<LecturerExamCont> {
                       size: 20,
                     ),
                   ),
-                  const SizedBox(width: 20),
+                  SizedBox(width: 20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         widget.title,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: AppColor.black,
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: 10),
                       Text(
                         "${widget.subtitle} • ${widget.dateandtime}",
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           color: AppColor.greyText,
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: 10),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const Icon(
+                          Icon(
                             FontAwesomeIcons.solidClock,
                             size: 12,
                             color: AppColor.greyText,
                           ),
-                          const SizedBox(width: 5),
+                          SizedBox(width: 5),
                           Text(
                             "${widget.timeduration} min",
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
                               color: AppColor.greyText,
                             ),
                           ),
-                          const SizedBox(width: 10),
-                          const Icon(
+                          SizedBox(width: 10),
+                          Icon(
                             FontAwesomeIcons.circleQuestion,
                             size: 12,
                             color: AppColor.greyText,
                           ),
-                          const SizedBox(width: 5),
+                          SizedBox(width: 5),
                           Text(
                             "${widget.noofquestions} questions",
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
                               color: AppColor.greyText,
                             ),
                           ),
-                          const SizedBox(width: 10),
-                          const Icon(
+                          SizedBox(width: 10),
+                          Icon(
                             FontAwesomeIcons.users,
                             size: 12,
                             color: AppColor.greyText,
                           ),
-                          const SizedBox(width: 10),
+                          SizedBox(width: 10),
                           Text(
                             "${widget.noofstudents} students",
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
                               color: AppColor.greyText,
                             ),
                           ),
-                          const SizedBox(width: 10),
-                          const Icon(
+                          SizedBox(width: 10),
+                          Icon(
                             FontAwesomeIcons.chartLine,
                             size: 14,
                             color: AppColor.greyText,
                           ),
-                          const SizedBox(width: 5),
+                          SizedBox(width: 5),
                           Text(
                             "${widget.average} average",
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
                               color: AppColor.greyText,
                             ),
@@ -174,7 +174,7 @@ class _LecturerExamContState extends State<LecturerExamCont> {
                       ),
                     ],
                   ),
-                  const Spacer(),
+                  Spacer(),
                   Container(
                     height: 20,
                     width: 70,
@@ -182,7 +182,7 @@ class _LecturerExamContState extends State<LecturerExamCont> {
                       color: Colors.green.shade100,
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: const Center(
+                    child: Center(
                       child: Text(
                         "Graded",
                         style: TextStyle(
@@ -193,12 +193,12 @@ class _LecturerExamContState extends State<LecturerExamCont> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 10),
+                  SizedBox(width: 10),
                   BasicButton(
                     horizontalPadding: 20,
                     verticalPadding: 10,
                     onPressed: () {},
-                    child: const Text(
+                    child: Text(
                       "Details",
                       style: TextStyle(
                         color: Colors.black,
@@ -220,7 +220,7 @@ class _LecturerExamContState extends State<LecturerExamCont> {
                       progressColor: Colors.blue,
                     ),
                   ),
-                  const SizedBox(width: 15),
+                  SizedBox(width: 15),
                   Expanded(
                     child: ReviewerContainer(
                       progress: widget.gradedprogress,
@@ -229,7 +229,7 @@ class _LecturerExamContState extends State<LecturerExamCont> {
                       progressColor: Colors.green,
                     ),
                   ),
-                  const SizedBox(width: 15),
+                  SizedBox(width: 15),
                   Expanded(
                     child: ReviewerContainer(
                       progress: widget.gradedreview,

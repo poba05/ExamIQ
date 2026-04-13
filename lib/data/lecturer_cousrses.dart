@@ -24,6 +24,8 @@ final lecturerCourses = [
     "Gradedtotal": 45,
     "gradedreview": 0,
     "ai_confidence": "85%",
+    "date": DateTime(2026, 6, 10),
+    "time": "2:00 pm",
   },
   {
     "id": 2,
@@ -47,6 +49,8 @@ final lecturerCourses = [
     "Gradedtotal": 38,
     "gradedreview": 12,
     "ai_confidence": "90%",
+    "date": DateTime(2026, 3, 11),
+    "time": "10:00 am",
   },
   {
     "id": 3,
@@ -70,6 +74,8 @@ final lecturerCourses = [
     "Gradedtotal": 48,
     "gradedreview": 0,
     "ai_confidence": "90%",
+    "date": DateTime(2026, 1, 18),
+    "time": "3:00 pm",
   },
   {
     "id": 4,
@@ -93,6 +99,8 @@ final lecturerCourses = [
     "Gradedtotal": 22,
     "gradedreview": 22,
     "ai_confidence": "90%",
+    "date": DateTime(2026, 1, 18),
+    "time": "3:00 pm",
   },
   {
     "id": 5,
@@ -116,6 +124,8 @@ final lecturerCourses = [
     "Gradedtotal": 0,
     "gradedreview": 0,
     "ai_confidence": "85%",
+    "date": DateTime(2026, 1, 18),
+    "time": "3:00 pm",
   },
   {
     "id": 6,

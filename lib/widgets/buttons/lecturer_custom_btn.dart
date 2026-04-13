@@ -8,7 +8,7 @@ class LecturerCustomBtn extends StatefulWidget {
   final String boldText;
   final String text;
   final Function onTap;
-  const LecturerCustomBtn({
+  LecturerCustomBtn({
     super.key,
     required this.iconbg,
     required this.iconcolor,
@@ -34,9 +34,9 @@ class _LecturerCustomBtnState extends State<LecturerCustomBtn> {
       child: GestureDetector(
         onTap: () => widget.onTap(),
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          margin: const EdgeInsets.all(10),
-          padding: const EdgeInsets.all(25),
+          duration: Duration(milliseconds: 200),
+          margin: EdgeInsets.all(10),
+          padding: EdgeInsets.all(25),
           decoration: BoxDecoration(
             color: AppColor.white,
             borderRadius: BorderRadius.circular(20),
@@ -46,7 +46,7 @@ class _LecturerCustomBtnState extends State<LecturerCustomBtn> {
                       color: Colors.grey.withOpacity(0.3),
                       spreadRadius: 2,
                       blurRadius: 5,
-                      offset: const Offset(0, 3),
+                      offset: Offset(0, 3),
                     ),
                   ]
                 : [],
@@ -67,19 +67,19 @@ class _LecturerCustomBtnState extends State<LecturerCustomBtn> {
                   size: 20,
                 ),
               ),
-              const SizedBox(height: 15),
+              SizedBox(height: 15),
               Text(
                 widget.boldText,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
                   color: AppColor.black,
                 ),
               ),
-              const SizedBox(height: 5),
+              SizedBox(height: 5),
               Text(
                 widget.text,
-                style: const TextStyle(fontSize: 14, color: AppColor.greyText),
+                style:  TextStyle(fontSize: 14, color: AppColor.greyText),
               ),
             ],
           ),
