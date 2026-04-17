@@ -1,13 +1,18 @@
 import 'package:examai/constants/app_color.dart';
 import 'package:examai/widgets/buttons/gradient_button_lg.dart';
-import 'package:examai/widgets/special_widgets/datetime_picker.dart';
-import 'package:examai/widgets/special_widgets/dropdown.dart';
 import 'package:examai/widgets/textfields/Custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class Newexam extends StatelessWidget {
-  const Newexam({super.key});
+class AddQuestionsPopup extends StatefulWidget {
+  const AddQuestionsPopup({super.key});
+
+  @override
+  State<AddQuestionsPopup> createState() => _AddQuestionsPopupState();
+}
+
+class _AddQuestionsPopupState extends State<AddQuestionsPopup> {
+  int questionNumber = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +39,7 @@ class Newexam extends StatelessWidget {
                 child: Row(
                   children: [
                     Text(
-                      "Create New Exam",
+                      "Add Questions",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -62,7 +67,7 @@ class Newexam extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Exam Name",
+                    "Question \$questionNumber",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -71,84 +76,13 @@ class Newexam extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   CustomTextfield(
-                    label: "e.g., Data Structure final exam",
+                    label: "Enter question text",
                     obscure: false,
+                    maxLines: 3,
                   ),
                   SizedBox(height: 20),
                   Text(
-                    "Course",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: AppColor.black,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Dropdown(
-                    mylist: [
-                      "Select a Course",
-                      "CS201 - Data Structures",
-                      "CS301 - Database Mangement",
-                      "CS401 - Operating systems",
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Duration Minutes",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: AppColor.black,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            CustomTextfield(
-                              label: "e.g., 90 minutes",
-                              obscure: false,
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Total Questions",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: AppColor.black,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            CustomTextfield(label: "e.g., 5", obscure: false),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    "Exam Date and time",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: AppColor.black,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  DateTimePicker(),
-                  SizedBox(height: 20),
-                  Text(
-                    "instructions",
+                    "Suggested Answer / Rubric",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -157,7 +91,7 @@ class Newexam extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   CustomTextfield(
-                    label: "Enter exam instructions",
+                    label: "Enter the expected answer or grading rubric",
                     obscure: false,
                     maxLines: 5,
                   ),
@@ -196,7 +130,7 @@ class Newexam extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        "Cancel",
+                        "Done",
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
@@ -208,17 +142,21 @@ class Newexam extends StatelessWidget {
                     GradientButtonLg(
                       horizontalPadding: 40,
                       verticalPadding: 20,
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          questionNumber++;
+                        });
+                      },
                       child: Row(
                         children: [
                           Icon(
-                            FontAwesomeIcons.circlePlus,
+                            FontAwesomeIcons.plus,
                             size: 20,
                             color: AppColor.white,
                           ),
                           SizedBox(width: 5),
                           Text(
-                            "Create Exam",
+                            "Save & Add Another",
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,

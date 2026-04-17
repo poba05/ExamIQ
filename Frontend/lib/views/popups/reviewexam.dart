@@ -69,7 +69,7 @@ class Reviewexam extends StatelessWidget {
                 SizedBox(height: 10),
                 Dropdown(
                   mylist: lecturerCourses
-                      .map((context) => context["mainText"] as String)
+                      .map((context) => context["coursetitle"] as String)
                       .toList(),
                 ),
                 SizedBox(height: 20),
