@@ -66,7 +66,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
             userRole: widget.userRole,
           ),
           Expanded(
-            child: SingleChildScrollView(child: pages[selectedIndex])
+            child: pages[selectedIndex]
                 .animate(key: ValueKey(selectedIndex))
                 .fadeIn(duration: 400.ms)
                 .slideX(begin: 0.02, end: 0, curve: Curves.easeInOut),

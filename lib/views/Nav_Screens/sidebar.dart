@@ -4,6 +4,7 @@ import 'package:examai/views/Landing/landing_page.dart';
 // import 'package:examai/views/Dashboard/student_dashboard/student_dashboard.dart';
 import 'package:examai/widgets/gradient_text.dart';
 import 'package:flutter/material.dart';
+import 'package:examai/utils/supabase_service.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Sidebar extends StatefulWidget {
@@ -23,11 +24,33 @@ class Sidebar extends StatefulWidget {
 
 class _SidebarState extends State<Sidebar> {
   List<SidebarModel> items = [];
+  Map<String, dynamic>? _profile;
+  bool _isLoadingProfile = true;
+  final SupabaseService _supabaseService = SupabaseService();
 
   @override
   void initState() {
     super.initState();
     _updateItemsForRole();
+    _fetchUserProfile();
+  }
+
+  Future<void> _fetchUserProfile() async {
+    try {
+      final profile = await _supabaseService.getUserProfile();
+      if (mounted) {
+        setState(() {
+          _profile = profile;
+          _isLoadingProfile = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isLoadingProfile = false;
+        });
+      }
+    }
   }
 
   @override
@@ -177,18 +200,23 @@ class _SidebarState extends State<Sidebar> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "John Doe",
+                      _isLoadingProfile
+                          ? "Loading..."
+                          : (_profile?['full_name'] ?? "User"),
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
                         color: AppColor.black,
                       ),
                     ),
                     Text(
-                      widget.userRole == 'student'
-                          ? "Student"
-                          : "Lecturer", // Example for other role
-                      style: TextStyle(fontSize: 14, color: AppColor.greyText),
+                      _isLoadingProfile
+                          ? ""
+                          : (_profile?['role']?.toString().toUpperCase() ??
+                                (widget.userRole == 'student'
+                                    ? "STUDENT"
+                                    : "LECTURER")),
+                      style: TextStyle(fontSize: 10, color: AppColor.greyText),
                     ),
                   ],
                 ),

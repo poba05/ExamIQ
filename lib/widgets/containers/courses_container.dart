@@ -11,6 +11,8 @@ class CoursesContainer extends StatefulWidget {
   final int students;
   final int exams;
   final String average;
+  final VoidCallback? onManage;
+  final VoidCallback? onExam;
 
   const CoursesContainer({
     super.key,
@@ -23,6 +25,8 @@ class CoursesContainer extends StatefulWidget {
     required this.students,
     required this.exams,
     required this.average,
+    this.onManage,
+    this.onExam,
   });
 
   @override
@@ -226,10 +230,10 @@ class _CoursesContainerState extends State<CoursesContainer> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: widget.onManage,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColor.primaryBlue,
-                        padding: EdgeInsets.symmetric(vertical: 10),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -244,13 +248,13 @@ class _CoursesContainerState extends State<CoursesContainer> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: widget.onExam,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.grey.shade500,
-                        padding: EdgeInsets.symmetric(vertical: 10),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),

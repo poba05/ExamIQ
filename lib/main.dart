@@ -1,9 +1,18 @@
-import 'package:examai/views/Landing/landing_page.dart';
+import 'package:examai/views/Splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:examai/constants/app_color.dart';
 
-void main() {
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Supabase.initialize(
+    url: 'https://onckrzyrgwrsarwrehrh.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9uY2tyenlyZ3dyc2Fyd3JlaHJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNTY3ODQsImV4cCI6MjA5MTczMjc4NH0.a8QqRGWnom-xBGmVA_Za_39fS8cxGo9EH0MOkiYSE74',
+  );
+
   runApp(const MyApp());
 }
 
@@ -22,9 +31,8 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.interTextTheme(),
         useMaterial3: true,
       ),
-      home: const LandingPage(),
+      home: const SplashScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
-

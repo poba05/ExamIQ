@@ -5,13 +5,28 @@ import 'package:examai/widgets/special_widgets/table/exam_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
+import 'package:examai/utils/supabase_service.dart';
+
 class Examtimetable extends StatelessWidget {
   const Examtimetable({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-          // "Exam Timetable" section.
+    final SupabaseService _db = SupabaseService();
+
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: _db.getAllExams(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const SizedBox(
+            height: 100,
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        final exams = snapshot.data ?? [];
+
+        return Container(
           margin: EdgeInsets.all(10),
           width: double.infinity,
           decoration: BoxDecoration(
@@ -21,7 +36,6 @@ class Examtimetable extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header for the timetable.
               Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
@@ -46,9 +60,7 @@ class Examtimetable extends StatelessWidget {
                   ),
                 ),
               ),
-              // A `Table` widget for a structured and aligned layout of the timetable.
               Table(
-                // Define the relative widths of the columns.
                 columnWidths: const {
                   0: FlexColumnWidth(2),
                   1: FlexColumnWidth(2),
@@ -58,7 +70,6 @@ class Examtimetable extends StatelessWidget {
                   5: FlexColumnWidth(2),
                 },
                 defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                // Add horizontal borders between rows.
                 border: TableBorder(
                   horizontalInside: BorderSide(
                     color: Colors.grey.shade300,
@@ -66,161 +77,28 @@ class Examtimetable extends StatelessWidget {
                   ),
                 ),
                 children: [
-                  // The header row of the table.
                   TableRow(
                     decoration: BoxDecoration(color: Colors.grey.shade200),
                     children: [
-                      // Each `TableCell` represents a header cell.
-                      TableCell(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 12.0,
-                            horizontal: 20.0,
-                          ),
-                          child: Text(
-                            "Date",
-                            style: TextStyle(
-                              color: AppColor.greyText,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      TableCell(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 12.0,
-                            horizontal: 5.0,
-                          ),
-                          child: Text(
-                            "Time",
-                            style: TextStyle(
-                              color: AppColor.greyText,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      TableCell(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 12.0,
-                            horizontal: 5.0,
-                          ),
-                          child: Text(
-                            "Course",
-                            style: TextStyle(
-                              color: AppColor.greyText,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      TableCell(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 12.0,
-                            horizontal: 5.0,
-                          ),
-                          child: Text(
-                            "Type",
-                            style: TextStyle(
-                              color: AppColor.greyText,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      TableCell(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 12.0,
-                            horizontal: 5.0,
-                          ),
-                          child: Text(
-                            "Duration",
-                            style: TextStyle(
-                              color: AppColor.greyText,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      TableCell(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 12.0,
-                            horizontal: 5.0,
-                          ),
-                          child: Text(
-                            "Status",
-                            style: TextStyle(
-                              color: AppColor.greyText,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
+                      _headerCell("Date"),
+                      _headerCell("Time"),
+                      _headerCell("Course"),
+                      _headerCell("Type"),
+                      _headerCell("Duration"),
+                      _headerCell("Status"),
                     ],
                   ),
-                  // Dynamically generate a `TableRow` for each exam in the `exams` list.
                   for (var exam in exams)
                     TableRow(
                       children: [
-                        // Each `TableCell` contains data for one exam property.
-                        TableCell(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 10,
-                              horizontal: 20.0,
-                            ),
-                            child: Text(
-                              // Use a helper function to format the date.
-                              formatDate(exam["date"] as DateTime),
-                            ),
-                          ),
+                        _dataCell(exam["exam_date"]?.toString() ?? "TBD"),
+                        _dataCell(exam["start_time"]?.toString() ?? "TBD"),
+                        _dataCell(
+                          (exam['courses'] as Map?)?['title']?.toString() ?? "N/A",
+                          isBold: true,
                         ),
-                        TableCell(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 10,
-                              horizontal: 5.0,
-                            ),
-                            child: Text(exam["time"] as String),
-                          ),
-                        ),
-                        TableCell(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 10,
-                              horizontal: 5.0,
-                            ),
-                            child: Text(
-                              exam["course"] as String,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                        TableCell(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 10,
-                              horizontal: 5.0,
-                            ),
-                            child: Text(exam["type"] as String),
-                          ),
-                        ),
-                        TableCell(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 10,
-                              horizontal: 5.0,
-                            ),
-                            child: Text(exam["duration"] as String),
-                          ),
-                        ),
+                        _dataCell("Exam"), // Placeholder
+                        _dataCell("${exam["duration_minutes"] ?? 0} min"),
                         TableCell(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
@@ -228,8 +106,7 @@ class Examtimetable extends StatelessWidget {
                               horizontal: 28.0,
                             ),
                             child: statusBadge(
-                              // Use the custom `statusBadge` widget to display the exam status.
-                              exam["date"] as DateTime,
+                              DateTime.tryParse(exam["exam_date"]?.toString() ?? "") ?? DateTime.now(),
                             ),
                           ),
                         ),
@@ -239,11 +116,37 @@ class Examtimetable extends StatelessWidget {
               ),
             ],
           ),
-        )
-        .animate()
-        // Animate the entire "Exam Timetable" section.
-        .animate()
-        .fadeIn(delay: 900.ms, duration: 500.ms)
-        .slideY(begin: 0.2);
+        ).animate().fadeIn(delay: 500.ms, duration: 500.ms).slideY(begin: 0.1);
+      },
+    );
+  }
+
+  Widget _headerCell(String text) {
+    return TableCell(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
+        child: Text(
+          text,
+          style: TextStyle(
+            color: AppColor.greyText,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _dataCell(String text, {bool isBold = false}) {
+    return TableCell(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20.0),
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+          ),
+        ),
+      ),
+    );
   }
 }

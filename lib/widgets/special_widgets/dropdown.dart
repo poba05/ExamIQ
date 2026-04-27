@@ -3,35 +3,50 @@ import 'package:flutter/material.dart';
 
 class Dropdown extends StatefulWidget {
   final List<String> mylist;
-  const Dropdown({super.key, required this.mylist});
+  final Function(String?)? onChanged;
+  final String? value;
+
+  const Dropdown({
+    super.key,
+    required this.mylist,
+    this.onChanged,
+    this.value,
+  });
 
   @override
   State<Dropdown> createState() => _DropdownState();
 }
 
 class _DropdownState extends State<Dropdown> {
-  String? selectedCourse;
+  String? selectedValue;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedValue = widget.value;
+  }
+
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
-      value: selectedCourse,
+      value: selectedValue,
       isExpanded: true,
       iconSize: 20,
       hint: const Text("Select an option"),
-
-      items: widget.mylist.map((course) {
+      items: widget.mylist.map((item) {
         return DropdownMenuItem(
-          value: course,
-          child: Text(course, overflow: TextOverflow.ellipsis),
+          value: item,
+          child: Text(item, overflow: TextOverflow.ellipsis),
         );
       }).toList(),
-
       onChanged: (value) {
         setState(() {
-          selectedCourse = value;
+          selectedValue = value;
         });
+        if (widget.onChanged != null) {
+          widget.onChanged!(value);
+        }
       },
-
       decoration: InputDecoration(
         filled: false,
         fillColor: Colors.grey.shade100,

@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 
 class GradientButtonLg extends StatelessWidget {
   final Widget child;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final int horizontalPadding;
   final int verticalPadding;
   const GradientButtonLg({
     super.key,
     required this.child,
-    required this.onPressed,
+    this.onPressed,
     required this.horizontalPadding,
     required this.verticalPadding,
   });

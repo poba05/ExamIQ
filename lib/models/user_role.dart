@@ -1,1 +1,1 @@
-enum UserRole { student, lecturer }
+enum UserRole { student, lecturer, admin }

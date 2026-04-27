@@ -6,6 +6,8 @@ import 'package:examai/widgets/containers/gradient_container.dart';
 import 'package:examai/widgets/gradient_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:examai/utils/page_transitions.dart';
+import 'package:examai/widgets/hover_3d_effect.dart';
 
 class HeroSection extends StatefulWidget {
   const HeroSection({super.key});
@@ -105,9 +107,8 @@ class _HeroSectionState extends State<HeroSection> {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const Login(selectedRole: UserRole.student),
+                              PageTransitions.slide3D(
+                                const Login(selectedRole: UserRole.student),
                               ),
                             );
                           },
@@ -137,10 +138,8 @@ class _HeroSectionState extends State<HeroSection> {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                builder: (context) => const Login(
-                                  selectedRole: UserRole.lecturer,
-                                ),
+                              PageTransitions.slide3D(
+                                const Login(selectedRole: UserRole.lecturer),
                               ),
                             );
                           },
@@ -240,23 +239,26 @@ class _HeroSectionState extends State<HeroSection> {
               ),
             ),
             SizedBox(width: 70),
-            Container(
-              height: 380,
-              width: 550,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.shade300,
-                    blurRadius: 70,
-                    spreadRadius: 30,
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Image.asset("lib/assets/exam_pic.jpg", fit: BoxFit.fill),
+            Hover3dEffect(
+              depth: 15.0,
+              child: Container(
+                height: 380,
+                width: 550,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.shade300,
+                      blurRadius: 70,
+                      spreadRadius: 30,
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Image.asset("lib/assets/exam_pic.jpg", fit: BoxFit.fill),
+                ),
               ),
             ),
           ],
