@@ -19,9 +19,10 @@ var DB *pgx.Conn
 // InitSupabase loads environment variables and initializes both the Supabase API Client and direct Postgres connection.
 func InitSupabase() {
 	// 1. Load the .env file.
-	err := godotenv.Load()
+	// Try current directory and Backend directory to be flexible.
+	err := godotenv.Load(".env", "Backend/.env")
 	if err != nil {
-		log.Println("No .env file found. Proceeding with system environment variables.")
+		log.Println("Note: .env file not found in current or Backend directory. Proceeding with system environment variables.")
 	}
 
 	// ---------------------------------------------------------
@@ -46,7 +47,17 @@ func InitSupabase() {
 	}
 
 	// Connect to the database using pgx
-	conn, err := pgx.Connect(context.Background(), dbURL)
+	config, err := pgx.ParseConfig(dbURL)
+	if err != nil {
+		log.Fatalf("Unable to parse DATABASE_URL: %v", err)
+	}
+
+	// Supabase Pooler (port 6543) uses PgBouncer in transaction mode.
+	// Transaction mode does not support prepared statements.
+	// Setting the default query execution mode to Simple Protocol fixes this.
+	config.DefaultQueryExecMode = pgx.QueryExecModeSimpleProtocol
+
+	conn, err := pgx.ConnectConfig(context.Background(), config)
 	if err != nil {
 		log.Fatalf("Failed to connect to the database: %v", err)
 	}

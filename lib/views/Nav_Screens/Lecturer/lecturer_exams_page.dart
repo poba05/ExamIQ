@@ -1,3 +1,4 @@
+import 'package:examai/views/Nav_Screens/Lecturer/create_exam_page.dart';
 import 'package:examai/constants/app_color.dart';
 import 'package:examai/data/lecturer_cousrses.dart';
 import 'package:examai/widgets/buttons/gradient_button_lg.dart';
@@ -37,7 +38,7 @@ class _LecturerExamsPageState extends State<LecturerExamsPage> {
             TopContainerLt(
               title: "Exams",
               subtitle: "Manage your exams and grading",
-              onPressed: () {},
+              onPressed: (BuildContext context) {},
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -54,7 +55,15 @@ class _LecturerExamsPageState extends State<LecturerExamsPage> {
                   GradientButtonLg(
                     horizontalPadding: 24,
                     verticalPadding: 12,
-                    onPressed: () {},
+                    onPressed: () async {
+                      final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CreateExamPage()),
+                      );
+                      if (result == true) {
+                        setState(() {}); // Refresh list
+                      }
+                    },
                     child: const Row(
                       children: [
                         Icon(

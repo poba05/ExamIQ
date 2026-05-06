@@ -73,10 +73,12 @@ class _SidebarState extends State<Sidebar> {
             title: "Timetable",
           ),
           SidebarModel(icon: FontAwesomeIcons.chartLine, title: "Results"),
+          SidebarModel(
+            icon: FontAwesomeIcons.robot,
+            title: "AI Study Assistant",
+          ),
         ];
-      } else {
-        // This is the list for other roles, e.g., 'lecturer'
-        // You can enter the sidebar models for the second part here.
+      } else if (widget.userRole == 'lecturer') {
         items = [
           SidebarModel(icon: FontAwesomeIcons.solidHouse, title: "Dashboard"),
           SidebarModel(icon: FontAwesomeIcons.book, title: "Courses"),
@@ -95,6 +97,21 @@ class _SidebarState extends State<Sidebar> {
             title: "Timetable",
           ),
           SidebarModel(icon: FontAwesomeIcons.chartLine, title: "Analytics"),
+        ];
+      } else if (widget.userRole == 'admin') {
+        items = [
+          SidebarModel(icon: FontAwesomeIcons.solidHouse, title: "Dashboard"),
+          SidebarModel(
+            icon: FontAwesomeIcons.usersGear,
+            title: "User Management",
+          ),
+          SidebarModel(icon: FontAwesomeIcons.book, title: "Courses"),
+          SidebarModel(
+            icon: FontAwesomeIcons.chartPie,
+            title: "System Activity",
+          ),
+          SidebarModel(icon: FontAwesomeIcons.shieldHalved, title: "Security"),
+          SidebarModel(icon: FontAwesomeIcons.gear, title: "Settings"),
         ];
       }
     });

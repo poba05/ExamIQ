@@ -3,6 +3,7 @@ import 'package:examai/views/Nav_Screens/Student/student_courses_page.dart';
 import 'package:examai/views/Nav_Screens/Student/student_exams_page.dart';
 import 'package:examai/views/Nav_Screens/Student/student_timetable_page.dart';
 import 'package:examai/views/Nav_Screens/Student/student_results_page.dart';
+import 'package:examai/views/Nav_Screens/Student/ai_study_assistant.dart';
 import 'package:examai/views/Nav_Screens/dashboard.dart';
 import 'package:examai/views/Nav_Screens/sidebar.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +45,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
       StudentExamsPage(),
       StudentTimetablePage(),
       StudentResultsPage(),
+      const AiStudyAssistant(),
     ];
   }
 

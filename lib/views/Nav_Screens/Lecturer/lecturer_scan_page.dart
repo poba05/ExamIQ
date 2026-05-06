@@ -21,7 +21,7 @@ class _LecturerScanPageState extends State<LecturerScanPage> {
         TopContainerLt(
           title: "Scan Papers",
           subtitle: "Welcome back, Dr. Smith",
-          onPressed: () {},
+          onPressed: (BuildContext context) {},
         ),
         SizedBox(height: 20),
         Padding(

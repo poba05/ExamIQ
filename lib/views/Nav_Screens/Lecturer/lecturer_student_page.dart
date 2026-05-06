@@ -69,7 +69,7 @@ class _LecturerStudentPageState extends State<LecturerStudentPage> {
             TopContainerLt(
               title: "Students",
               subtitle: "Manage your students",
-              onPressed: () {},
+              onPressed: (context) {},
             ).animate().fadeIn(duration: 400.ms).slideX(begin: -0.1),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),

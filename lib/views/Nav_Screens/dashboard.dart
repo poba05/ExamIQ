@@ -1,3 +1,4 @@
+import 'package:examai/constants/app_color.dart';
 import 'package:examai/data/student_summary_list.dart';
 import 'package:examai/utils/supabase_service.dart';
 import 'package:examai/widgets/dashboard_widgets/lecturerDashboard/recentstudents.dart';
@@ -30,7 +31,13 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     // The main scrollable layout for the dashboard.
-    return widget.userRole == 'student' ? StudentContent() : Lecturercontent();
+    if (widget.userRole == 'student') {
+      return StudentContent();
+    } else if (widget.userRole == 'lecturer') {
+      return Lecturercontent();
+    } else {
+      return AdminContent();
+    }
   }
 }
 
@@ -192,7 +199,8 @@ class Lecturercontent extends StatelessWidget {
             "iconbg": Colors.green.shade100,
             "icon_color": Colors.green,
             "text_color": Colors.green,
-            "Bold_text": "${(statsData['avgScore'] as double? ?? 0.0).toStringAsFixed(1)}%",
+            "Bold_text":
+                "${(statsData['avgScore'] as double? ?? 0.0).toStringAsFixed(1)}%",
             "grey_text": "Avg Performance",
             "color_text": "High",
           },
@@ -236,6 +244,219 @@ class Lecturercontent extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class AdminContent extends StatelessWidget {
+  const AdminContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final SupabaseService _db = SupabaseService();
+
+    return FutureBuilder(
+      future: Future.wait([_db.getAllProfiles(), _db.getCourses()]),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        final results = snapshot.data as List<dynamic>? ?? [[], []];
+        final allProfiles = results[0] as List<Map<String, dynamic>>;
+        final allCourses = results[1] as List<Map<String, dynamic>>;
+
+        final studentCount = allProfiles
+            .where((p) => p['role'] == 'student')
+            .length;
+        final lecturerCount = allProfiles
+            .where((p) => p['role'] == 'lecturer')
+            .length;
+
+        final summaryItems = [
+          {
+            "icon": FontAwesomeIcons.users,
+            "iconbg": Colors.blue.shade100,
+            "icon_color": Colors.blue,
+            "text_color": Colors.blue,
+            "Bold_text": "$studentCount",
+            "grey_text": "Total Students",
+            "color_text": "Registered",
+          },
+          {
+            "icon": FontAwesomeIcons.chalkboardUser,
+            "iconbg": Colors.purple.shade100,
+            "icon_color": Colors.purple,
+            "text_color": Colors.purple,
+            "Bold_text": "$lecturerCount",
+            "grey_text": "Total Lecturers",
+            "color_text": "Staff",
+          },
+          {
+            "icon": FontAwesomeIcons.book,
+            "iconbg": Colors.green.shade100,
+            "icon_color": Colors.green,
+            "text_color": Colors.green,
+            "Bold_text": "${allCourses.length}",
+            "grey_text": "Total Courses",
+            "color_text": "Academic",
+          },
+          {
+            "icon": FontAwesomeIcons.shieldHalved,
+            "iconbg": Colors.orange.shade100,
+            "icon_color": Colors.orange,
+            "text_color": Colors.orange,
+            "Bold_text": "Active",
+            "grey_text": "System Status",
+            "color_text": "Secure",
+          },
+        ];
+
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              const DashboardHeaderLt(), // Can reuse lecturer header for now or make admin one
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  children: [
+                    SummaryCardlt(items: summaryItems),
+                    const SizedBox(height: 20),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Container(
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.05),
+                                  blurRadius: 10,
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "System Activity",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                // Placeholder for a chart or activity list
+                                ListTile(
+                                  leading: const Icon(
+                                    FontAwesomeIcons.userPlus,
+                                    color: Colors.green,
+                                  ),
+                                  title: const Text("New user registered"),
+                                  subtitle: const Text("2 minutes ago"),
+                                ),
+                                ListTile(
+                                  leading: const Icon(
+                                    FontAwesomeIcons.book,
+                                    color: Colors.blue,
+                                  ),
+                                  title: const Text("Course 'CSC 401' updated"),
+                                  subtitle: const Text("1 hour ago"),
+                                ),
+                                ListTile(
+                                  leading: const Icon(
+                                    FontAwesomeIcons.triangleExclamation,
+                                    color: Colors.orange,
+                                  ),
+                                  title: const Text("Failed login attempt"),
+                                  subtitle: const Text("3 hours ago"),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.05),
+                                  blurRadius: 10,
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Quick Actions",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                _quickAction(
+                                  context,
+                                  "Add Lecturer",
+                                  FontAwesomeIcons.userPlus,
+                                ),
+                                _quickAction(
+                                  context,
+                                  "System Backup",
+                                  FontAwesomeIcons.database,
+                                ),
+                                _quickAction(
+                                  context,
+                                  "Broadcast Msg",
+                                  FontAwesomeIcons.bullhorn,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _quickAction(BuildContext context, String title, IconData icon) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: InkWell(
+        onTap: () {},
+        child: Container(
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            color: Colors.grey.shade50,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Colors.grey.shade200),
+          ),
+          child: Row(
+            children: [
+              Icon(icon, size: 16, color: AppColor.primaryBlue),
+              const SizedBox(width: 15),
+              Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

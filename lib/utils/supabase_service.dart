@@ -490,4 +490,31 @@ class SupabaseService {
       }
     }
   }
+  // --- Exam Creation ---
+  Future<String> createExam({
+    required String courseId,
+    required String title,
+    required String examDate,
+    required int durationMinutes,
+  }) async {
+    final response = await supabase.from('exams').insert({
+      'course_id': courseId,
+      'title': title,
+      'exam_date': examDate,
+      'duration_minutes': durationMinutes,
+    }).select().single();
+    return response['id'];
+  }
+
+  Future<void> addQuestionsToExam(String examId, List<Map<String, dynamic>> questions) async {
+    final formattedQuestions = questions.map((q) => {
+      'exam_id': examId,
+      'question_text': q['question_text'],
+      'question_type': q['question_type'],
+      'correct_answer': q['correct_answer'],
+      'points': q['points'] ?? 1,
+    }).toList();
+
+    await supabase.from('questions').insert(formattedQuestions);
+  }
 }

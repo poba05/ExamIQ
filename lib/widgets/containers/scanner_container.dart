@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:examai/constants/app_color.dart';
+import 'package:examai/utils/ai_service.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -15,6 +16,9 @@ class ScannerContainer extends StatefulWidget {
 class _ScannerContainerState extends State<ScannerContainer> {
   bool ishovering = false;
   final List<PlatformFile> _pickedFiles = [];
+  final AIService _aiService = AIService();
+  bool _isGrading = false;
+  Map<String, dynamic>? _gradingResult;
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
@@ -107,7 +111,7 @@ class _ScannerContainerState extends State<ScannerContainer> {
                   ),
                 ),
                 SizedBox(height: 20),
-                if (_pickedFiles.isNotEmpty)
+                if (_pickedFiles.isNotEmpty) ...[
                   Wrap(
                     spacing: 10.0,
                     runSpacing: 10.0,
@@ -164,8 +168,66 @@ class _ScannerContainerState extends State<ScannerContainer> {
                         ),
                       );
                     }),
-                  )
-                else
+                  ),
+                  const SizedBox(height: 30),
+                  if (_isGrading)
+                    const Column(
+                      children: [
+                        CircularProgressIndicator(),
+                        SizedBox(height: 10),
+                        Text("AI is grading the papers... Please wait."),
+                      ],
+                    )
+                  else if (_gradingResult != null)
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.green.shade50,
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(color: Colors.green.shade200),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(FontAwesomeIcons.robot, color: Colors.green, size: 20),
+                              const SizedBox(width: 10),
+                              const Text("AI Grading Complete", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                              const Spacer(),
+                              Text("${_gradingResult!['score']}%", style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: Colors.green)),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          const Text("AI Feedback:", style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text(_gradingResult!['feedback']),
+                          const SizedBox(height: 10),
+                          const Text("OCR Text identified:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                          Text(_gradingResult!['identified_text'], style: const TextStyle(fontSize: 10, fontStyle: FontStyle.italic)),
+                        ],
+                      ),
+                    )
+                  else
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        setState(() {
+                          _isGrading = true;
+                        });
+                        final result = await _aiService.gradePaper("");
+                        setState(() {
+                          _isGrading = false;
+                          _gradingResult = result;
+                        });
+                      },
+                      icon: const Icon(FontAwesomeIcons.wandMagicSparkles, size: 16, color: Colors.white),
+                      label: const Text("Run AI Grading", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColor.primaryPurple,
+                        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      ),
+                    ),
+                ] else
                   Text(
                     "Supports PDF, JPG, PNG • Max 50MB per file",
                     style: TextStyle(fontSize: 10, color: AppColor.greyText),

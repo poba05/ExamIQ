@@ -3,10 +3,12 @@ import 'package:examai/widgets/buttons/gradient_button_lg.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+typedef TopContainerCallback = void Function(BuildContext context);
+
 class TopContainerLt extends StatelessWidget {
   final String title;
   final String subtitle;
-  final Function onPressed;
+  final TopContainerCallback onPressed;
   final String buttonLabel;
   final IconData buttonIcon;
   final bool showButton;
@@ -51,7 +53,7 @@ class TopContainerLt extends StatelessWidget {
                 SizedBox(height: 5),
                 Text(
                   subtitle,
-                  style:  TextStyle(fontSize: 14, color: AppColor.greyText),
+                  style: TextStyle(fontSize: 14, color: AppColor.greyText),
                 ),
               ],
             ),
@@ -59,8 +61,10 @@ class TopContainerLt extends StatelessWidget {
             if (showButton) ...[
               GradientButtonLg(
                 horizontalPadding: 20,
-                verticalPadding: 20,
-                onPressed: () => onPressed(context),
+                verticalPadding: 10,
+                onPressed: () {
+                  onPressed(context);
+                },
                 child: Row(
                   children: [
                     Icon(buttonIcon, color: AppColor.white, size: 16),

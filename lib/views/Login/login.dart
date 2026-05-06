@@ -3,6 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:examai/models/user_role.dart';
 import 'package:examai/views/Nav_Screens/Lecturer/lecturer_dashboard.dart';
 import 'package:examai/views/Nav_Screens/Student/student_dashboard.dart';
+import 'package:examai/views/Nav_Screens/Admin/admin_dashboard.dart';
 import 'package:examai/views/Landing/landing_page.dart';
 import 'package:examai/widgets/buttons/gradient_button_lg.dart';
 import 'package:examai/widgets/containers/gradient_container.dart';
@@ -61,12 +62,20 @@ class _LoginState extends State<Login> {
         final String role = profile['role'];
 
         if (mounted) {
+          Widget dashboard;
+          if (role == 'student') {
+            dashboard = const StudentDashboard();
+          } else if (role == 'lecturer') {
+            dashboard = const LecturerDashboard();
+          } else if (role == 'admin') {
+            dashboard = const AdminDashboard();
+          } else {
+            dashboard = const StudentDashboard();
+          }
+
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  role == 'student' ? StudentDashboard() : LecturerDashboard(),
-            ),
+            MaterialPageRoute(builder: (context) => dashboard),
           );
         }
       }
