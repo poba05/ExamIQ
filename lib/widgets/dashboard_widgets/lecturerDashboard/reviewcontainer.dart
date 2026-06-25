@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:examai/utils/supabase_service.dart';
+import 'package:examai/views/Nav_Screens/Lecturer/lecturer_review_page.dart';
 
 class Reviewcontainer extends StatelessWidget {
   const Reviewcontainer({super.key});
@@ -129,7 +130,24 @@ class Reviewcontainer extends StatelessWidget {
                                   ),
                                   Spacer(),
                                   ElevatedButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => Scaffold(
+                                            appBar: AppBar(
+                                              title: Text("Review - ${student['full_name'] ?? 'Submission'}"),
+                                              backgroundColor: AppColor.navyblue,
+                                              foregroundColor: Colors.white,
+                                            ),
+                                            body: LecturerReviewPage(
+                                              initialExam: exam,
+                                              initialSubmission: submission,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: AppColor.primaryPurple,
                                       shape: RoundedRectangleBorder(

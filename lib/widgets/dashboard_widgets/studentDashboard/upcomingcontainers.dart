@@ -2,6 +2,7 @@ import 'package:examai/constants/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:examai/views/Nav_Screens/Student/exam_session_page.dart';
 
 import 'package:examai/utils/supabase_service.dart';
 
@@ -123,7 +124,15 @@ class Upcomingcontainers extends StatelessWidget {
                                       ),
                                     ),
                                     ElevatedButton(
-                                      onPressed: () {},
+                                      onPressed: isActive
+                                          ? () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) => ExamSessionPage(exam: exam),
+                                                ),
+                                              );
+                                            }
+                                          : () {},
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: isActive
                                             ? Colors.green

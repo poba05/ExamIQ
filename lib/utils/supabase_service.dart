@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:examai/utils/ai_service.dart';
 
 class SupabaseService {
   final supabase = Supabase.instance.client;
@@ -68,17 +70,17 @@ class SupabaseService {
     try {
       final response = await supabase
           .from('exams')
-          .select('*, courses(title, course_code, profiles!lecturer_id(full_name))');
+          .select('*, courses(title, course_code, profiles!lecturer_id(full_name)), questions(id)');
       return List<Map<String, dynamic>>.from(response as List);
     } catch (e) {
       print("Error in getAllExams: $e");
       try {
         final response = await supabase
             .from('exams')
-            .select('*, courses(title, course_code, profiles(full_name))');
+            .select('*, courses(title, course_code, profiles(full_name)), questions(id)');
         return List<Map<String, dynamic>>.from(response as List);
       } catch (e2) {
-        final response = await supabase.from('exams').select('*, courses(title, course_code)');
+        final response = await supabase.from('exams').select('*, courses(title, course_code), questions(id)');
         return List<Map<String, dynamic>>.from(response as List);
       }
     }
@@ -88,11 +90,34 @@ class SupabaseService {
     final user = supabase.auth.currentUser;
     if (user == null) return [];
 
-    final response = await supabase
-        .from('exams')
-        .select('*, courses!inner(title, course_code, lecturer_id)')
-        .eq('courses.lecturer_id', user.id);
-    return List<Map<String, dynamic>>.from(response);
+    try {
+      final response = await supabase
+          .from('exams')
+          .select('*, courses!inner(title, course_code, lecturer_id, enrollments(id)), questions(id), submissions(score, status)')
+          .eq('courses.lecturer_id', user.id);
+      return List<Map<String, dynamic>>.from(response);
+    } catch (e) {
+      print("Error in getLecturerExams: $e");
+      try {
+        final response = await supabase
+            .from('exams')
+            .select('*, courses!inner(title, course_code, lecturer_id), questions(id), submissions(score, status)')
+            .eq('courses.lecturer_id', user.id);
+        return List<Map<String, dynamic>>.from(response);
+      } catch (e2) {
+        print("Error in getLecturerExams (retry 1): $e2");
+        try {
+          final response = await supabase
+              .from('exams')
+              .select('*, courses!inner(title, course_code, lecturer_id)')
+              .eq('courses.lecturer_id', user.id);
+          return List<Map<String, dynamic>>.from(response);
+        } catch (e3) {
+          print("Error in getLecturerExams (retry 2): $e3");
+          return [];
+        }
+      }
+    }
   }
 
   Future<List<Map<String, dynamic>>> getExamsForCourse(String courseId) async {
@@ -117,8 +142,66 @@ class SupabaseService {
       'student_id': user.id,
       'file_url': fileUrl,
       'submission_data': submissionData,
+      'status': 'submitted',
     });
   }
+
+  Future<void> markExamTerminated(String examId, String reason) async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+
+    await supabase.from('submissions').upsert({
+      'exam_id': examId,
+      'student_id': user.id,
+      'status': 'terminated',
+      'submission_data': {'termination_reason': reason},
+    });
+
+  }
+
+  Future<void> markExamInProgress(String examId) async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+
+    await supabase.from('submissions').upsert({
+      'exam_id': examId,
+      'student_id': user.id,
+      'status': 'in_progress',
+    });
+  }
+
+  Future<Map<String, dynamic>?> checkSubmission(String examId) async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return null;
+
+    final response = await supabase
+        .from('submissions')
+        .select()
+        .eq('exam_id', examId)
+        .eq('student_id', user.id)
+        .limit(1)
+        .maybeSingle();
+    return response;
+  }
+
+  Future<List<Map<String, dynamic>>> getExamQuestions(String examId) async {
+    final response = await supabase
+        .from('questions')
+        .select()
+        .eq('exam_id', examId);
+    return List<Map<String, dynamic>>.from(response);
+  }
+
+  Future<List<Map<String, dynamic>>> getActiveExaminees(String examId) async {
+    final response = await supabase
+        .from('submissions')
+        .select('*, profiles!student_id(full_name, email)')
+        .eq('exam_id', examId)
+        .eq('status', 'in_progress');
+    return List<Map<String, dynamic>>.from(response);
+  }
+
+
 
   Future<List<Map<String, dynamic>>> getStudentSubmissions() async {
     final user = supabase.auth.currentUser;
@@ -180,7 +263,7 @@ class SupabaseService {
     final submissions = await supabase
         .from('submissions')
         .select('score')
-        .filter('exam_id', 'in', examIds);
+        .inFilter('exam_id', examIds);
     
     final List<Map<String, dynamic>> subList = List<Map<String, dynamic>>.from(submissions);
     final double avgScore = subList.isEmpty 
@@ -334,6 +417,29 @@ class SupabaseService {
     return supabase.storage.from('course_materials').getPublicUrl(path);
   }
 
+  Future<String?> uploadExamSnapshot(String examId, List<int> fileBytes) async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return null;
+
+    final path = 'exam_feeds/$examId/${user.id}.jpg';
+    
+    // We use upsert: true to overwrite the previous snapshot
+    await supabase.storage.from('proctoring').uploadBinary(
+      path,
+      fileBytes as dynamic,
+      fileOptions: const FileOptions(cacheControl: '0', upsert: true),
+    );
+    
+    return supabase.storage.from('proctoring').getPublicUrl(path);
+  }
+
+  String getExamSnapshotUrl(String examId, String studentId) {
+    final path = 'exam_feeds/$examId/$studentId.jpg';
+    // Append timestamp to bust cache
+    return "${supabase.storage.from('proctoring').getPublicUrl(path)}?t=${DateTime.now().millisecondsSinceEpoch}";
+  }
+
+
   Future<void> updateCoursePdf(String courseId, String pdfUrl) async {
     await supabase
         .from('courses')
@@ -474,7 +580,10 @@ class SupabaseService {
     final AuthResponse res = await supabase.auth.signUp(
       email: email,
       password: password,
-      data: {'full_name': fullName},
+      data: {
+        'full_name': fullName,
+        'role': role,
+      },
     );
 
     if (res.user != null) {
@@ -487,6 +596,7 @@ class SupabaseService {
         });
       } catch (e) {
         print("Profile creation error (might be handled by trigger): $e");
+        rethrow;
       }
     }
   }
@@ -502,19 +612,141 @@ class SupabaseService {
       'title': title,
       'exam_date': examDate,
       'duration_minutes': durationMinutes,
+      'status': 'Upcoming', 
     }).select().single();
+
+
     return response['id'];
   }
 
   Future<void> addQuestionsToExam(String examId, List<Map<String, dynamic>> questions) async {
-    final formattedQuestions = questions.map((q) => {
-      'exam_id': examId,
-      'question_text': q['question_text'],
-      'question_type': q['question_type'],
-      'correct_answer': q['correct_answer'],
-      'points': q['points'] ?? 1,
+    final formattedQuestions = questions.map((q) {
+      String fullText = q['question_text'];
+      if (q['label'] != null && q['label'].toString().isNotEmpty) {
+        fullText = "${q['label']}) $fullText";
+      }
+      return {
+        'exam_id': examId,
+        'question_text': fullText,
+        'question_type': q['question_type'],
+        'correct_answer': q['correct_answer'],
+        'points': q['points'] ?? 5,
+      };
     }).toList();
 
     await supabase.from('questions').insert(formattedQuestions);
+  }
+
+  /// Fetches all submissions (completed, graded, terminated, etc.) for a specific exam
+  Future<List<Map<String, dynamic>>> getExamSubmissions(String examId) async {
+    try {
+      final response = await supabase
+          .from('submissions')
+          .select('*, profiles!student_id(full_name, email)')
+          .eq('exam_id', examId);
+      return List<Map<String, dynamic>>.from(response as List);
+    } catch (e) {
+      print("Error in getExamSubmissions: $e");
+      return [];
+    }
+  }
+
+  /// Runs AI grading for a specific submission and stores the results in the database
+  Future<Map<String, dynamic>> runAIGrading(String submissionId) async {
+    try {
+      // 1. Fetch submission details without unnecessary join to avoid postgrest errors
+      final submission = await supabase
+          .from('submissions')
+          .select('*')
+          .eq('id', submissionId)
+          .single();
+
+      final examId = submission['exam_id'] as String;
+      
+      // Safely parse submission_data map
+      Map<String, dynamic> submissionData = {};
+      final rawData = submission['submission_data'];
+      if (rawData is Map) {
+        submissionData = Map<String, dynamic>.from(rawData);
+      } else if (rawData is String) {
+        try {
+          submissionData = Map<String, dynamic>.from(jsonDecode(rawData));
+        } catch (_) {}
+      }
+
+      // 2. Fetch exam questions
+      final questions = await getExamQuestions(examId);
+
+      // 3. Call AI Service to grade
+      final aiService = AIService();
+      final gradingDetails = await aiService.gradeSubmission(
+        questions: questions,
+        studentAnswers: submissionData,
+      );
+
+      // 4. Update the submission's submission_data with ai_evaluation and save confidence
+      final updatedSubmissionData = Map<String, dynamic>.from(submissionData);
+      updatedSubmissionData['ai_evaluation'] = gradingDetails;
+
+      await supabase.from('submissions').update({
+        'submission_data': updatedSubmissionData,
+        'ai_confidence': gradingDetails['confidence'],
+      }).eq('id', submissionId);
+
+      return gradingDetails;
+    } catch (e) {
+      print("Error running AI grading in SupabaseService: $e");
+      rethrow;
+    }
+  }
+
+  /// Saves the final score approved by the lecturer and marks the status as approved
+  Future<void> approveSubmission({
+    required String submissionId,
+    required double finalScore,
+    required Map<String, dynamic> aiEvaluation,
+  }) async {
+    // 1. Fetch the current submission to preserve student answers
+    final submission = await supabase
+        .from('submissions')
+        .select('submission_data')
+        .eq('id', submissionId)
+        .single();
+        
+    final submissionData = Map<String, dynamic>.from(submission['submission_data'] as Map? ?? {});
+    
+    // 2. Update status and approved score inside ai_evaluation
+    final aiEval = Map<String, dynamic>.from(aiEvaluation);
+    aiEval['status'] = 'approved';
+    aiEval['approved_score'] = finalScore;
+    aiEval['approved_at'] = DateTime.now().toIso8601String();
+    
+    submissionData['ai_evaluation'] = aiEval;
+    
+    // 3. Save to database and set main score
+    await supabase.from('submissions').update({
+      'score': finalScore,
+      'status': 'approved',
+      'submission_data': submissionData,
+    }).eq('id', submissionId);
+  }
+
+  /// Fetches the count of submissions that have been reviewed and approved
+  Future<int> getApprovedSubmissionsCount() async {
+    try {
+      final user = supabase.auth.currentUser;
+      if (user == null) return 0;
+
+      final response = await supabase
+          .from('submissions')
+          .select('id, exams!inner(course_id, courses!inner(lecturer_id))')
+          .eq('exams.courses.lecturer_id', user.id)
+          .not('score', 'is', null);
+          
+      return (response as List).length;
+    } catch (e) {
+      print("Error fetching approved submissions count: $e");
+      return 0;
+    }
   }
 }

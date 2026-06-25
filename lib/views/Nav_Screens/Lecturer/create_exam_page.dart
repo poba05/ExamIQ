@@ -24,10 +24,11 @@ class _CreateExamPageState extends State<CreateExamPage> {
 
   List<Map<String, dynamic>> _questions = [
     {
+      'label': '1a',
       'question_text': '',
-      'question_type': 'MCQ',
+      'question_type': 'Structured',
       'correct_answer': '',
-      'points': 1,
+      'points': 5,
     },
   ];
 
@@ -55,11 +56,13 @@ class _CreateExamPageState extends State<CreateExamPage> {
 
   void _addQuestion() {
     setState(() {
+      String nextLabel = "${_questions.length + 1}a";
       _questions.add({
+        'label': nextLabel,
         'question_text': '',
-        'question_type': 'MCQ',
+        'question_type': 'Structured',
         'correct_answer': '',
-        'points': 1,
+        'points': 5,
       });
     });
   }
@@ -336,12 +339,28 @@ class _CreateExamPageState extends State<CreateExamPage> {
             ],
           ),
           const SizedBox(height: 20),
-          TextFormField(
-            initialValue: question['question_text'],
-            onChanged: (val) => question['question_text'] = val,
-            maxLines: 2,
-            decoration: _inputDecoration("Enter question text...", null),
-            validator: (val) => val!.isEmpty ? "Required" : null,
+          Row(
+            children: [
+              SizedBox(
+                width: 100,
+                child: TextFormField(
+                  initialValue: question['label'] ?? '',
+                  onChanged: (val) => question['label'] = val,
+                  decoration: _inputDecoration("Label", null),
+                  validator: (val) => val!.isEmpty ? "!" : null,
+                ),
+              ),
+              const SizedBox(width: 15),
+              Expanded(
+                child: TextFormField(
+                  initialValue: question['question_text'],
+                  onChanged: (val) => question['question_text'] = val,
+                  maxLines: 2,
+                  decoration: _inputDecoration("Enter question text...", null),
+                  validator: (val) => val!.isEmpty ? "Required" : null,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 20),
           Row(
@@ -349,7 +368,7 @@ class _CreateExamPageState extends State<CreateExamPage> {
               Expanded(
                 child: DropdownButtonFormField<String>(
                   value: question['question_type'],
-                  items: ['MCQ', 'Short Answer'].map((type) {
+                  items: ['Structured', 'Essay'].map((type) {
                     return DropdownMenuItem(value: type, child: Text(type));
                   }).toList(),
                   onChanged: (val) =>
@@ -363,7 +382,7 @@ class _CreateExamPageState extends State<CreateExamPage> {
                   initialValue: question['points'].toString(),
                   keyboardType: TextInputType.number,
                   onChanged: (val) =>
-                      question['points'] = int.tryParse(val) ?? 1,
+                      question['points'] = int.tryParse(val) ?? 5,
                   decoration: _inputDecoration("Points", null),
                 ),
               ),
@@ -373,18 +392,21 @@ class _CreateExamPageState extends State<CreateExamPage> {
           TextFormField(
             initialValue: question['correct_answer'],
             onChanged: (val) => question['correct_answer'] = val,
+            maxLines: question['question_type'] == 'Essay' ? 4 : 1,
             decoration: _inputDecoration(
-              "Correct Answer (Essential for grading)",
+              question['question_type'] == 'Essay' 
+                ? "Expected Answer / Key Points" 
+                : "Correct Answer",
               FontAwesomeIcons.check,
             ),
             validator: (val) =>
-                val!.isEmpty ? "Correct answer is required" : null,
+                val!.isEmpty ? "Required for grading" : null,
           ),
-          if (question['question_type'] == 'MCQ')
+          if (question['question_type'] == 'Essay')
             Padding(
               padding: const EdgeInsets.only(top: 10.0, left: 10),
               child: Text(
-                "Tip: For MCQ, use comma-separated options if needed, but the field above is the correct one.",
+                "Tip: For Essay questions, list the key points that the AI should look for in the student's answer.",
                 style: TextStyle(
                   fontSize: 12,
                   color: AppColor.greyText,

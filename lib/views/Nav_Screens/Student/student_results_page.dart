@@ -231,7 +231,14 @@ class _StudentResultsPageState extends State<StudentResultsPage> {
                                           ),
                                           SizedBox(height: 8),
                                           Text(
-                                            result['feedback']?.toString() ?? 'No feedback provided yet.',
+                                            () {
+                                              final submissionData = result['submission_data'] as Map? ?? {};
+                                              final aiEvaluation = submissionData['ai_evaluation'] as Map? ?? {};
+                                              final lecturerFeedback = aiEvaluation['lecturer_feedback']?.toString();
+                                              return (lecturerFeedback != null && lecturerFeedback.isNotEmpty)
+                                                  ? lecturerFeedback
+                                                  : result['feedback']?.toString() ?? 'No feedback provided yet.';
+                                            }(),
                                             style: TextStyle(
                                               fontSize: 12,
                                               color: Colors.grey.shade500,

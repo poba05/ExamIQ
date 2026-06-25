@@ -19,6 +19,8 @@ class LecturerExamCont extends StatefulWidget {
   final int gradedtotal;
   final int gradedreview;
   final String dateandtime;
+  final VoidCallback? onLiveMonitor;
+  final VoidCallback? onDetailsPressed;
   LecturerExamCont({
     super.key,
     required this.title,
@@ -35,6 +37,8 @@ class LecturerExamCont extends StatefulWidget {
     required this.gradedtotal,
     required this.gradedreview,
     required this.dateandtime,
+    this.onLiveMonitor,
+    this.onDetailsPressed,
   });
 
   @override
@@ -194,10 +198,33 @@ class _LecturerExamContState extends State<LecturerExamCont> {
                     ),
                   ),
                   SizedBox(width: 10),
+                  if (widget.onLiveMonitor != null) ...[
+                    BasicButton(
+                      horizontalPadding: 20,
+                      verticalPadding: 10,
+                      onPressed: widget.onLiveMonitor!,
+                      backgroundColor: Colors.red.shade50,
+                      child: const Row(
+                        children: [
+                          Icon(Icons.wifi, color: Colors.red, size: 14),
+                          SizedBox(width: 8),
+                          Text(
+                            "Live Monitor",
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                  ],
                   BasicButton(
                     horizontalPadding: 20,
                     verticalPadding: 10,
-                    onPressed: () {},
+                    onPressed: widget.onDetailsPressed ?? () {},
                     child: Text(
                       "Details",
                       style: TextStyle(

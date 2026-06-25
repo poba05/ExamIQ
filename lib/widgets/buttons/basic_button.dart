@@ -6,20 +6,24 @@ class BasicButton extends StatelessWidget {
   final VoidCallback onPressed;
   final int horizontalPadding;
   final int verticalPadding;
+  final Color? backgroundColor;
   const BasicButton({
     super.key,
     required this.child,
     required this.onPressed,
     required this.horizontalPadding,
     required this.verticalPadding,
+    this.backgroundColor,
   });
+
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: AppColor.white,
+        color: backgroundColor ?? AppColor.white,
+
         border: Border(
           bottom: BorderSide(color: Colors.grey.shade300, width: 1),
           top: BorderSide(color: Colors.grey.shade300, width: 1),

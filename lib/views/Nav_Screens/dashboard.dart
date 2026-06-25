@@ -44,26 +44,40 @@ class _DashboardState extends State<Dashboard> {
 class StudentContent extends StatelessWidget {
   const StudentContent({super.key});
 
+  String _getGradeLetter(int score) {
+    if (score >= 90) return 'A+';
+    if (score >= 80) return 'A';
+    if (score >= 70) return 'B';
+    if (score >= 60) return 'C';
+    if (score >= 50) return 'D';
+    return 'F';
+  }
+
   @override
   Widget build(BuildContext context) {
     final SupabaseService _db = SupabaseService();
 
     return FutureBuilder(
-      future: Future.wait([_db.getCourses(), _db.getAllExams()]),
+      future: Future.wait([_db.getCourses(), _db.getAllExams(), _db.getStudentSubmissions()]),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
 
-        final results = snapshot.data as List<dynamic>? ?? [[], []];
+        final results = snapshot.data as List<dynamic>? ?? [[], [], []];
         final coursesCount = results[0].length;
         final exams = results[1] as List<Map<String, dynamic>>;
+        final submissions = results[2] as List<Map<String, dynamic>>;
+
         final upcomingExamsCount = exams
             .where((e) => e['status'] == 'Upcoming')
             .length;
-        final completedExamsCount = exams
-            .where((e) => e['status'] == 'Completed')
-            .length;
+        final completedExamsCount = submissions.length;
+
+        final gradedSubmissions = submissions.where((s) => s['score'] != null).toList();
+        final double avgScore = gradedSubmissions.isEmpty
+            ? 0.0
+            : gradedSubmissions.fold(0.0, (sum, s) => sum + (s['score'] as num).toDouble()) / gradedSubmissions.length;
 
         final dynamicList = [
           {
@@ -89,9 +103,9 @@ class StudentContent extends StatelessWidget {
             "iconbg": Colors.green.shade100,
             "icon_color": Colors.green,
             "text_color": Colors.green,
-            "Bold_text": "N/A",
+            "Bold_text": gradedSubmissions.isEmpty ? "N/A" : "${avgScore.toStringAsFixed(1)}%",
             "grey_text": "Average Grade",
-            "color_text": "0%",
+            "color_text": gradedSubmissions.isEmpty ? "0%" : _getGradeLetter(avgScore.toInt()),
           },
           {
             "icon": FontAwesomeIcons.clock,

@@ -43,3 +43,22 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# ============================================================
+# SECRETS & ENVIRONMENT VARIABLES — NEVER COMMIT THESE
+# ============================================================
+# Flutter app environment variables (Supabase keys, Gemini API key)
+lib/assets/.env
+
+# Go Backend environment variables (DB credentials, API keys)
+Backend/.env
+
+# Compiled Go binaries
+Backend/*.exe
+Backend/backend
+Backend/check_default
+
+# Temp analysis files
+analyze.txt
+current_analyze.txt
+current_analyze_utf8.txt

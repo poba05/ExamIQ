@@ -1,16 +1,18 @@
 import 'package:examai/views/Splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Load the environment variables
+  await dotenv.load(fileName: "lib/assets/.env");
+
   await Supabase.initialize(
-    url: 'https://onckrzyrgwrsarwrehrh.supabase.co',
-    anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9uY2tyenlyZ3dyc2Fyd3JlaHJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNTY3ODQsImV4cCI6MjA5MTczMjc4NH0.a8QqRGWnom-xBGmVA_Za_39fS8cxGo9EH0MOkiYSE74',
+    url: dotenv.env['SUPABASE_URL'] ?? 'https://onckrzyrgwrsarwrehrh.supabase.co',
+    anonKey: dotenv.env['SUPABASE_ANON_KEY'] ?? '',
   );
 
   runApp(const MyApp());

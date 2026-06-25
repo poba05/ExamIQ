@@ -1,5 +1,8 @@
 import 'package:examai/views/Nav_Screens/Lecturer/create_exam_page.dart';
+import 'package:examai/views/Nav_Screens/Lecturer/live_monitoring_page.dart';
+import 'package:examai/views/Nav_Screens/Lecturer/lecturer_review_page.dart';
 import 'package:examai/constants/app_color.dart';
+
 import 'package:examai/data/lecturer_cousrses.dart';
 import 'package:examai/widgets/buttons/gradient_button_lg.dart';
 import 'package:examai/widgets/containers/lecturer_exam_cont.dart';
@@ -97,6 +100,28 @@ class _LecturerExamsPageState extends State<LecturerExamsPage> {
                         final course =
                             exam['courses'] as Map<String, dynamic>? ?? {};
 
+                        final questionsList = exam['questions'] as List? ?? [];
+                        final submissionsList = exam['submissions'] as List? ?? [];
+                        final enrollmentsList = course['enrollments'] as List? ?? [];
+
+                        final noofquestions = questionsList.length;
+                        final noofstudents = enrollmentsList.length;
+                        
+                        final submittedprogress = submissionsList.length;
+                        final submittedtotal = noofstudents;
+
+                        final gradedList = submissionsList.where((s) => s['score'] != null).toList();
+                        final gradedprogress = gradedList.length;
+                        final gradedtotal = submissionsList.length;
+                        final gradedreview = submissionsList.where((s) => s['score'] == null).length;
+
+                        double averageScore = 0.0;
+                        if (gradedprogress > 0) {
+                          double totalScore = gradedList.fold(0.0, (sum, s) => sum + (s['score'] as num).toDouble());
+                          averageScore = totalScore / gradedprogress;
+                        }
+                        final averageText = gradedprogress > 0 ? "${averageScore.toStringAsFixed(1)}%" : "N/A";
+
                         return LecturerExamCont(
                               title: exam['title']?.toString() ?? "N/A",
                               subtitle: course['course_code']?.toString() ?? "",
@@ -105,15 +130,38 @@ class _LecturerExamsPageState extends State<LecturerExamsPage> {
                               timeduration:
                                   (exam['duration_minutes'] as num?)?.toInt() ??
                                   0,
-                              noofquestions: 0, // Placeholder
-                              noofstudents: 0, // Placeholder
-                              average: "N/A",
-                              submittedprogress: 0,
-                              submittedtotal: 0,
-                              gradedprogress: 0,
-                              gradedtotal: 0,
-                              gradedreview: 0,
+                              noofquestions: noofquestions,
+                              noofstudents: noofstudents,
+                              average: averageText,
+                              submittedprogress: submittedprogress,
+                              submittedtotal: submittedtotal,
+                              gradedprogress: gradedprogress,
+                              gradedtotal: gradedtotal,
+                              gradedreview: gradedreview,
                               dateandtime: exam['exam_date']?.toString() ?? "",
+                              onLiveMonitor: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => LiveMonitoringPage(exam: exam),
+                                  ),
+                                );
+                              },
+                              onDetailsPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Scaffold(
+                                      appBar: AppBar(
+                                        title: Text("Exam Submissions - ${exam['title']}"),
+                                        backgroundColor: AppColor.navyblue,
+                                        foregroundColor: Colors.white,
+                                      ),
+                                      body: LecturerReviewPage(initialExam: exam),
+                                    ),
+                                  ),
+                                );
+                              },
                             )
                             .animate()
                             .fadeIn(delay: (index * 200).ms)
@@ -122,6 +170,7 @@ class _LecturerExamsPageState extends State<LecturerExamsPage> {
                               end: 0,
                               curve: Curves.easeOutQuad,
                             );
+
                       }).toList(),
                     ),
             ),
